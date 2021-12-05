@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLabelReadiesTable extends Migration
+class CreateFieldsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateLabelReadiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('label_readies', function (Blueprint $table) {
+        Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('label_id');
+            $table->foreignId('set_id')->constrained();
             $table->string('name');
-            $table->string('path');
-            $table->boolean('is_downloaded')->default(false);
+            $table->string('display_name');
+            $table->string('type')->default('text');
+            $table->string('default')->nullable();
+            $table->text('settings')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateLabelReadiesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('label_readies');
+        Schema::dropIfExists('fields');
     }
 }

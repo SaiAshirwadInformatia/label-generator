@@ -1,10 +1,11 @@
 <?php
 
+use App\Models\Set;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLabelFieldsTable extends Migration
+class CreateSetsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +14,14 @@ class CreateLabelFieldsTable extends Migration
      */
     public function up()
     {
-        Schema::create('label_fields', function (Blueprint $table) {
+        Schema::create('sets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('label_id')->constrained();
+            $table->foreignId('label_id');
             $table->string('name');
-            $table->string('display_name');
-            $table->string('type')->default('text');
-            $table->string('default')->nullable();
-            $table->longText('settings')->nullable();
+            $table->unsignedTinyInteger('type')->default(Set::SINGLE);
+            $table->string('columnName')->nullable();
+            $table->boolean('is_downloaded')->default(false);
+            $table->text('settings')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +33,6 @@ class CreateLabelFieldsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('label_fields');
+        Schema::dropIfExists('sets');
     }
 }

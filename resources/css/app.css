@@ -1,3 +1,21 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+.btn svg {
+    @apply inline;
+}
+
+.btn {
+    @apply mt-2 px-4 focus:outline-none text-white text-sm sm:text-base bg-blue-500 hover:bg-blue-600 rounded-2xl py-2 transition duration-150 ease-in;
+}
+
+.btn-sm {
+    @apply px-4 py-1.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase hover:bg-blue-700 focus:bg-blue-700 focus:outline-none focus:ring-0 transition duration-150 ease-in-out;
+}
+.btn-group .btn-sm:first-child {
+    @apply rounded-l;
+}
+.btn-group .btn-sm:last-child {
+    @apply rounded-r;
+}

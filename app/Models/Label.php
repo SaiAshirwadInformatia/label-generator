@@ -12,12 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property string $name
  * @property string $path
- * @property array $styles
+ * @property array $settings
  * @property User $user
- * @property Collection|LabelField[] $fields
- * @property Collection|LabelReady[] $readies
- * @property Collection|LabelRow[] $rows
- * @property Collection|LabelDownload[] $downloads
+ * @property Collection|Set[] $sets
+ * @property Collection|Field[] $fields
+ * @property Collection|Download[] $downloads
  * @property Carbon $started_at
  * @property Carbon $completed_at
  * @property Carbon $created_at
@@ -30,16 +29,21 @@ class Label extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'styles'];
+    protected $fillable = ['name', 'settings'];
 
     /**
      * @var array
      */
     protected $casts = [
-        'styles'       => 'array',
+        'settings'     => 'array',
         'started_at'   => 'datetime',
         'completed_at' => 'datetime',
     ];
+
+    /**
+     * @var array
+     */
+    protected $withCount = ['sets', 'fields', 'downloads'];
 
     /**
      * @return mixed
@@ -52,25 +56,17 @@ class Label extends Model
     /**
      * @return mixed
      */
+    public function sets()
+    {
+        return $this->hasMany(Set::class);
+    }
+
+    /**
+     * @return mixed
+     */
     public function fields()
     {
-        return $this->hasMany(LabelField::class);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function rows()
-    {
-        return $this->hasMany(LabelRow::class);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function readies()
-    {
-        return $this->hasMany(LabelReady::class);
+        return $this->hasManyThrough(Field::class, Set::class);
     }
 
     /**
@@ -78,6 +74,6 @@ class Label extends Model
      */
     public function downloads()
     {
-        return $this->hasMany(LabelDownload::class);
+        return $this->hasManyThrough(Download::class, Set::class);
     }
 }

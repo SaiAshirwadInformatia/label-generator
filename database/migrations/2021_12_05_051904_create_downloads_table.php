@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLabelRowsTable extends Migration
+class CreateDownloadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateLabelRowsTable extends Migration
      */
     public function up()
     {
-        Schema::create('label_rows', function (Blueprint $table) {
+        Schema::create('downloads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('label_id');
-            $table->unsignedInteger('index');
-            $table->longText('data');
+            $table->foreignId('set_id')->constrained();
+            $table->string('ip');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateLabelRowsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('label_rows');
+        Schema::dropIfExists('downloads');
     }
 }

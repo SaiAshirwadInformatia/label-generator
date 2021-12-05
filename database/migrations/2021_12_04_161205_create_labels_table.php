@@ -18,7 +18,7 @@ class CreateLabelsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('name');
             $table->string('path')->nullable();
-            $table->text('styles')->nullable();
+            $table->longText('settings')->nullable();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamps();

@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property array $settings
  * @property Label $label
  */
-class LabelField extends Model
+class Field extends Model
 {
     use HasFactory;
 
