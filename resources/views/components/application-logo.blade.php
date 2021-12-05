@@ -1,0 +1,1 @@
+<h1 class="font-sans text-3xl">Label Generator</h1>
