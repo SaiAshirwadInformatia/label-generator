@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\LabelCreated;
+use App\Models\Set;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;

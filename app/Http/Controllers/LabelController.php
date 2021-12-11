@@ -18,16 +18,4 @@ class LabelController extends Controller
     {
         return view('labels.create');
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Label           $label
-     * @return \Illuminate\Http\Response
-     */
-    public function configure(Label $label)
-    {
-        return view('labels.configure', compact('label'));
-    }
-
 }

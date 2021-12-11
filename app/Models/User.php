@@ -49,4 +49,32 @@ class User extends Authenticatable
     {
         return $this->hasMany(Label::class);
     }
+
+    public function excludes()
+    {
+        return $this->hasMany(Exclude::class);
+    }
+
+    public function sets()
+    {
+        return $this->hasManyThrough(Set::class, Label::class);
+    }
+
+    public function fields()
+    {
+        return $this->sets()->join('fields', 'fields.set_id', '=', 'sets.id')
+            ->select('fields.*')
+            ->groupBy('fields.id');
+    }
+
+    public function downloads()
+    {
+        return $this->sets()->join('downloads', 'downloads.set_id', '=', 'sets.id')
+            ->select('downloads.*')
+            ->groupBy('downloads.id');
+    }
+
+    public function getTotalLabelsAttribute()
+    {
+    }
 }

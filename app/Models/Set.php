@@ -33,6 +33,8 @@ class Set extends Model
         'settings'      => 'array',
     ];
 
+    protected $with = ['fields'];
+
     /**
      * @return mixed
      */

@@ -2,7 +2,10 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\Field;
+use App\Models\Label;
 use App\Models\Set;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -12,36 +15,20 @@ class LabelConfigure extends Component
     /**
      * @var mixed
      */
-    public $label;
+    public Label $label;
 
-    /**
-     * @var array
-     */
-    public $sets = [];
+    public $fontsConfig;
 
-    /**
-     * @var array
-     */
-    public $fields = [];
+    protected $rules = [
+        'label.sets.*.name',
+        'label.sets.*.type',
+        'label.sets.*.columnName',
+    ];
 
-    public function mount()
+    public function mount($label)
     {
-        $this->sets = $this->label->sets->toArray();
-        foreach ($this->label->sets as $set) {
-            $this->fields[$set->id] = $set->fields->toArray();
-            if (count($this->fields[$set->id]) == 0) {
-                $this->fields[$set->id] = [];
-                foreach ($this->label->settings['columns'] as $column) {
-                    $this->fields[$set->id][] = [
-                        'name'         => $column,
-                        'display_name' => Str::title($column),
-                        'type'         => 'Text',
-                        'default'      => '',
-                        'settings'     => [],
-                    ];
-                }
-            }
-        }
+        $this->label = Label::find($label);
+        $this->fontsConfig = config('sai.fonts');
     }
 
     /**
@@ -50,26 +37,15 @@ class LabelConfigure extends Component
     public function updated($property)
     {
         if (Str::startsWith($property, 'sets')) {
-            $this->resaveSets();
+            Log::info($property);
         } else if (Str::startsWith($property, 'field')) {
-
+            Log::info($property);
+            Log::info(json_encode($this->fields));
         }
     }
 
     private function resaveSets()
     {
-        $this->label->sets()->delete();
-        $sets = [];
-        foreach ($this->sets as $set) {
-            $s                = new Set();
-            $s->name          = $set['name'];
-            $s->type          = $set['type'];
-            $s->columnName    = $set['columnName'];
-            $s->is_downloaded = $set['is_downloaded'];
-            $s->settings      = $set['settings'];
-            $sets[]           = $s;
-        }
-        $this->label->sets()->saveMany($sets);
         $this->label->refresh();
     }
 
@@ -77,11 +53,10 @@ class LabelConfigure extends Component
      * @param $setId
      * @param $fieldIndex
      */
-    public function removeField($setId, $fieldIndex)
+    public function removeField($setId, $fieldId)
     {
-        $fields = $this->fields[$setId];
-        array_splice($fields, $fieldIndex, 1);
-        $this->fields[$setId] = $fields;
+        Field::where('id', $fieldId)->delete();
+        $this->label->refresh();
     }
 
     /**
@@ -97,7 +72,11 @@ class LabelConfigure extends Component
             'display_name' => '',
             'type'         => 'Text',
             'default'      => '',
-            'settings'     => [],
+            'settings'     => [
+                'font' => 'Roboto',
+                'type' => 'Regular',
+                'size' => '12'
+            ],
         ];
     }
 

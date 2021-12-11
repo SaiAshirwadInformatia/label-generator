@@ -15,4 +15,35 @@ return [
         'dd/MM/YYYY' => 'dd/MM/YYYY',
         'INR'        => 'INR',
     ],
+    'fonts' => [
+        'Roboto' => [
+            'name' => 'Roboto',
+            'weight' => [
+                'Black' => 'Black',
+                'BlackItalic' => 'BlackItalic',
+                'Bold' => 'Bold',
+                'BoldItalic' => 'BoldItalic',
+                'Italic' => 'Italic',
+                'Light' => 'Light',
+                'LightItalic' => 'LightItalic',
+                'Medium' => 'Medium',
+                'MediumItalic' => 'MediumItalic',
+                'Regular' => 'Regular',
+                'Thin' => 'Thin',
+                'ThinItalic' => 'ThinItalic'
+            ]
+        ],
+
+        'Aleo' => [
+            'name' => 'Aleo',
+            'weight' => [
+                'Bold' => 'Bold',
+                'BoldItalic' => 'BoldItalic',
+                'Italic' => 'Italic',
+                'Light' => 'Light',
+                'LightItalic' => 'LightItalic',
+                'Regular' => 'Regular',
+            ]
+        ]
+    ],
 ];
