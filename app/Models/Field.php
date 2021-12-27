@@ -13,7 +13,24 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $type
  * @property string $default
  * @property array $settings
- * @property Label $label
+ * @property Set $set
+ * @property int $id
+ * @property int $set_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereDefault($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereDisplayName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereSetId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereSettings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Field extends Model
 {
@@ -34,8 +51,8 @@ class Field extends Model
     /**
      * @return mixed
      */
-    public function label()
+    public function set()
     {
-        return $this->belongsTo(Label::class);
+        return $this->belongsTo(Set::class);
     }
 }

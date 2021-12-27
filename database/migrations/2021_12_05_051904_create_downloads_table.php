@@ -15,7 +15,7 @@ class CreateDownloadsTable extends Migration
     {
         Schema::create('downloads', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('set_id')->constrained();
+            $table->foreignId('set_id')->constrained()->cascadeOnDelete();
             $table->string('ip');
             $table->timestamps();
         });

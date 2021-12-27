@@ -16,7 +16,7 @@ class CreateSetsTable extends Migration
     {
         Schema::create('sets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('label_id');
+            $table->foreignId('label_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->unsignedTinyInteger('type')->default(Set::SINGLE);
             $table->string('columnName')->nullable();

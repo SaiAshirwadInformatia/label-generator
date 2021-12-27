@@ -18,4 +18,9 @@ class LabelController extends Controller
     {
         return view('labels.create');
     }
+
+    public function configure(Request $request, Label $label)
+    {
+        return view('labels.configure', compact('label'));
+    }
 }

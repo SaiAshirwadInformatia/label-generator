@@ -15,7 +15,7 @@ class CreateFieldsTable extends Migration
     {
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('set_id')->constrained();
+            $table->foreignId('set_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->string('display_name');
             $table->string('type')->default('text');

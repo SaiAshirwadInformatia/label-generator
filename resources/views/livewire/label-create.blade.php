@@ -17,26 +17,42 @@
                     <x-label for="name" :value="__('Name')" />
                     <x-input wire:model.defer="name" class="block mt-1 w-full" type="text" required autofocus />
                     @if ($errors->has('name'))
-                        {{ $errors->name }}
+                        <span class="error">{{ $errors->name }}</span>
                     @endif
                 </div>
             </div>
 
             <div class="flex space-x-4 mt-2">
                 <div class="w-4/12 ">
-                    <x-label for="pageSize" :value="__('Page Size')" />
-                    <x-select wire:model.defer="settings.pageSize" id="pageSize" class="block mt-1 w-full"
-                        :options="$pageOptions" />
+                    <x-label for="size" :value="__('Page Size')" />
+                    <x-select wire:model.defer="size" id="size" class="block mt-1 w-full" :options="$pageOptions" />
+                    @error('size')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="w-4/12">
                     <x-label for="orientation" :value="__('Page Orientation')" />
-                    <x-select wire:model.defer="settings.pageOrientation" id="orientation" class="block mt-1 w-full"
+                    <x-select wire:model.defer="orientation" id="orientation" class="block mt-1 w-full"
                         :options="$pageOrientations" />
+                    @error('orientation')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="w-4/12">
-                    <x-label for="pageNumber" :value="__('Page Number')" />
-                    <x-select wire:model.defer="settings.pageNumber" id="pageNumber" class="block mt-1 w-full"
-                        :options="['No', 'Yes']" />
+                    <x-label for="numbers" :value="__('Page Number')" />
+                    <x-select wire:model.defer="numbers" id="numbers" class="block mt-1 w-full"
+                        :options="['' => 'Select', '0' => 'No', '1' => 'Yes']" />
+                    @error('numbers')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="w-4/12">
+                    <x-label for="column_nos" :value="__('Page Columns')" />
+                    <x-select wire:model.defer="column_nos" id="column_nos" class="block mt-1 w-full"
+                        :options="['' => 'Select', 1 => 1, 2 => 2, 3 => 3, 4 => 4]" />
+                    @error('column_nos')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <x-button class="mt-4">

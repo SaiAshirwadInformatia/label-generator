@@ -4,5 +4,5 @@
             {{ __('Configure your Label Generation : ' . $label->name) }}
         </h2>
     </x-slot>
-    <livewire:label-configure :label="$label" :fontsConfig="$fontsConfig" />
+    <livewire:label-configure :label="$label" />
 </x-app-layout>

@@ -24,17 +24,19 @@ class LabelCreate extends Component
      * @var mixed
      */
     public $path;
-    /**
-     * @var mixed
-     */
-    public $settings = [];
+
+    public $size, $orientation, $numbers, $column_nos;
 
     /**
      * @var array
      */
-    public $rules = [
+    protected $rules = [
         'name' => 'required',
         'path' => 'mimes:csv,xls,xlsx',
+        'size' => 'required',
+        'orientation' => 'required',
+        'numbers' => 'required',
+        'column_nos' => 'required'
     ];
 
     public function updatedPath()
@@ -52,7 +54,12 @@ class LabelCreate extends Component
         $label           = new Label();
         $label->name     = $this->name;
         $label->path     = $this->path->store('/uploads', 'public');
-        $label->settings = $this->settings;
+        $label->settings = [
+            'size' => $this->size,
+            'orientation' => $this->orientation,
+            'numbers' => $this->numbers,
+            'column_nos' => $this->column_nos
+        ];
         auth()->user()->labels()->save($label);
 
         event(new LabelCreated($label));
@@ -64,11 +71,9 @@ class LabelCreate extends Component
 
     public function render()
     {
-        $this->page        = config('sai.page');
-        $this->orientation = config('sai.orientation');
         return view('livewire.label-create', [
-            'pageOptions'      => config('sai.pageOptions'),
-            'pageOrientations' => config('sai.pageOrientations'),
+            'pageOptions'      => array_merge(['' => 'Select'], config('sai.pageOptions')),
+            'pageOrientations' => array_merge(['' => 'Select'], config('sai.pageOrientations')),
         ]);
     }
 }

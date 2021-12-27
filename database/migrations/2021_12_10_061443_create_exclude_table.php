@@ -15,7 +15,7 @@ class CreateExcludeTable extends Migration
     {
         Schema::create('exclude', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->string('name');
             $table->timestamps();
         });

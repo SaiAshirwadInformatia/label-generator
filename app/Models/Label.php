@@ -21,6 +21,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property Carbon $completed_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
+ * @property int $id
+ * @property int $user_id
+ * @property-read int|null $downloads_count
+ * @property-read int|null $fields_count
+ * @property-read int|null $sets_count
+ * @method static \Database\Factories\LabelFactory factory(...$parameters)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Label newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Label query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereCompletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereSettings($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereStartedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Label whereUserId($value)
+ * @mixin \Eloquent
  */
 class Label extends Model
 {
