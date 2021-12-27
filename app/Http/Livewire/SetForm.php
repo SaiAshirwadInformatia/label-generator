@@ -39,10 +39,15 @@ class SetForm extends Component
         return view('livewire.set-form');
     }
 
-    public function generateExcel()
+    public function generatePDF()
     {
         GeneratePDFJob::dispatch($this->set);
         $this->emit('showSuccess', 'PDF generation added to queue, you should receive email shortly!');
+    }
+
+    public function previewPDF()
+    {
+        $this->emit('openLink', route('labels.preview', ['set' => $this->set->id]));
     }
 
     public function destroy()

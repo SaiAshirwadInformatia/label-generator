@@ -14,10 +14,12 @@ Livewire.on('showSuccess', message => Swal.fire({
     timer: 2000
 }));
 
-Livewire.on('showError', messge => Swal.fire({
+Livewire.on('showError', message => Swal.fire({
     title: 'Error!',
     text: message,
     icon: 'error',
     confirmButtonText: 'Ok',
     timer: 3000
 }))
+
+Livewire.on('openLink', link => window.open(link));

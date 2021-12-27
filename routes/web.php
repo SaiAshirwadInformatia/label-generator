@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::get('/labels/create', [LabelController::class, 'create'])->name('labels.create');
     Route::get('/labels/{label}/configure', [LabelController::class, 'configure'])->name('labels.configure');
+    Route::get('/sets/{set}/preview', [LabelController::class, 'preview'])->name('labels.preview');
 });
 
 Route::get('/download/{token}', [ReadyController::class, 'download'])->name('download');

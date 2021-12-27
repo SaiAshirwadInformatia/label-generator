@@ -55,4 +55,22 @@ class Field extends Model
     {
         return $this->belongsTo(Set::class);
     }
+
+    public function css()
+    {
+        $css = [];
+        $font = 'font-family: ' . $this->settings['font'];
+        $font .= '-' . $this->settings['type'];
+        $css[] = strtolower($font);
+        if (isset($this->settings['size'])) {
+            $css[] = 'font-size: ' . $this->settings['size'] . 'px';
+        }
+        // if (isset($this->settings['color'])) {
+        //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];
+        // }
+        // if (isset($this->settings['background-color'])) {
+        //     $css[] = 'background-color:' . (str_starts_with($this->settings['background-color'], '#') ? '' : '#') . $this->settings['background-color'];
+        // }
+        return implode(';', $css);
+    }
 }

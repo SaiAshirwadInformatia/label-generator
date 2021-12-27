@@ -73,4 +73,9 @@ class Set extends Model
     {
         return $this->hasMany(Field::class);
     }
+
+    public function fonts()
+    {
+        
+    }
 }

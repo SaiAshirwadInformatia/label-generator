@@ -18,7 +18,7 @@ class ReadyController extends Controller
         $download->set_id = $ready->set_id;
         $download->ip = request()->ip();
         $download->save();
-
-        return response()->download($path, $ready->set->name . '-' . Carbon::now()->format('d-m-Y-h:i') . '.pdf');
+        $filename = $ready->set->name . '-' . Carbon::now()->format('d-m-Y-h:i') . '.pdf';
+        return response()->download($path, $filename);
     }
 }

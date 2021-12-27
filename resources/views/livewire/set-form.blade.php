@@ -1,6 +1,6 @@
 <x-container>
     <div class="flex">
-        <div class="w-2/6">
+        <div class="w-1/6">
             <x-label class="font-bold">Set Name</x-label>
             <x-input wire:model.debounce.500ms="set.name" type="text" class="w-10/12" />
         </div>
@@ -14,8 +14,12 @@
                 <x-select wire:model="set.columnName" :options="$columns" />
             </div>
         @endif
-        <div class="w-3/6 text-right">
-            <x-button class="mt-3" wire:click="generateExcel">
+        <div class="w-4/6 text-right">
+            <x-button class="mt-3" wire:click="previewPDF">
+                @include('icons.eye')
+                Preview PDF
+            </x-button>
+            <x-button class="mt-3" wire:click="generatePDF">
                 @include('icons.document-download')
                 Generate PDF
             </x-button>

@@ -49,7 +49,7 @@ class GeneratePDFJob implements ShouldQueue
         if (!Storage::disk('local')->exists($directory)) {
             Storage::disk('local')->makeDirectory($directory);
         }
-        $fileName = $directory . DIRECTORY_SEPARATOR . time() . '.xlsx';
+        $fileName = $directory . DIRECTORY_SEPARATOR . time() . '.pdf';
         $outputPath = Storage::disk('local')->path($fileName);
         $ready->path = $fileName;
         $ready->started_at = Carbon::now();
@@ -70,6 +70,7 @@ class GeneratePDFJob implements ShouldQueue
                     $record[] = $cell->getValue();
                 }
                 if (count($columns) == 0) {
+                    // this is just to skip this row
                     $columns = $record;
                 } else {
                     $records[] = $record;
