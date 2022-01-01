@@ -13,6 +13,8 @@ use PDF;
 class LabelController extends Controller
 {
 
+    public const PREVIEW = 1000;
+
     /**
      * Store a newly created resource in storage.
      *
@@ -36,10 +38,12 @@ class LabelController extends Controller
         $records = [];
 
         $path = Storage::disk('public')->path($label->path);
+
         $reader = ReaderEntityFactory::createReaderFromFile($path);
         $reader->open($path);
 
         $previewRecords = 0;
+
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $row) {
                 // do stuff with the row
@@ -55,56 +59,69 @@ class LabelController extends Controller
                     $records[] = $record;
                     $previewRecords++;
                 }
-                if ($previewRecords >= 16) {
+                if ($previewRecords >= self::PREVIEW) {
                     break;
                 }
             }
-            if ($previewRecords >= 16) {
+            if ($previewRecords >= self::PREVIEW) {
                 break;
             }
         }
-        
-        $records = collect($records);
-        $data = [];
+
+        $reader->close();
+        $reader = null;
+
+        $tableRows = collect($records)->groupBy($set->settings['differentPage']);
+        $records = null;
         $incremental = 1;
 
+        $tables = [];
+
         if ($set->type == Set::GROUPED) {
-            $records = $records->groupBy($set->columnName);
-            foreach ($records as $record) {
-                $subCount = count($record);
-                $record = $record->first();
-                $row = [];
-                foreach ($set->fields as $field) {
-                    $row[] = match ($field->type) {
-                        'Text' => $record[$field->name],
-                        'Static' => $field->default,
-                        'SubCount' => $subCount,
-                        'Incremented' => $incremental++,
-                        'Number' => intval($record[$field->name]),
-                        'Float' => floatval($record[$field->name]),
-                        'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
-                        'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                        'INR' => 'Rs. ' . $record[$field->name]
-                    };
+            foreach ($tableRows as $stateName => $records) {
+                $records = $records->groupBy($set->columnName);
+                $data = [];
+                foreach ($records as $record) {
+                    $subCount = count($record);
+                    $record = $record->first();
+                    $row = [];
+                    foreach ($set->fields as $field) {
+                        $row[] = match ($field->type) {
+                            'Text' => $record[$field->name],
+                            'Static' => $field->default,
+                            'SubCount' => $subCount,
+                            'Incremented' => $incremental++,
+                            'Number' => intval($record[$field->name]),
+                            'Float' => floatval($record[$field->name]),
+                            'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
+                            'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                            'INR' => 'Rs. ' . $record[$field->name]
+                        };
+                    }
+                    $data[] = $row;
                 }
-                $data[] = $row;
+                $tables[$stateName] = $data;
             }
         } else {
-            foreach ($records as $record) {
-                $row = [];
-                foreach ($set->fields as $field) {
-                    $row[] = match ($field->type) {
-                        'Text' => $record[$field->name],
-                        'Static' => $field->default,
-                        'Incremented' => $incremental++,
-                        'Number' => intval($record[$field->name]),
-                        'Float' => floatval($record[$field->name]),
-                        'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
-                        'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                        'INR' => 'Rs. ' . $record[$field->name]
-                    };
+            foreach ($tableRows as $stateName => $records) {
+                $data = [];
+                foreach ($records as $record) {
+                    $row = [];
+                    foreach ($set->fields as $field) {
+                        $row[] = match ($field->type) {
+                            'Text' => $record[$field->name],
+                            'Static' => $field->default,
+                            'Incremented' => $incremental++,
+                            'Number' => intval($record[$field->name]),
+                            'Float' => floatval($record[$field->name]),
+                            'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
+                            'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                            'INR' => 'Rs. ' . $record[$field->name]
+                        };
+                    }
+                    $data[] = $row;
                 }
-                $data[] = $row;
+                $tables[$stateName] = $data;
             }
         }
 
@@ -112,7 +129,7 @@ class LabelController extends Controller
             'pdf.table',
             [
                 'set' => $set,
-                'tableRows' => $data
+                'tables' => $tables
             ]
         )
             ->setPaper($label->settings['size'], $label->settings['orientation'])

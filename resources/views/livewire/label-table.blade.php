@@ -20,10 +20,10 @@
                             <td class="p-2">
                                 <div class="my-2">
                                     <a href="{{ route('labels.configure', ['label' => $label->id]) }}">
-                                        @include('icons.cog')
+                                        <x-icon.cog></x-icon.cog>
                                     </a>
                                     <a href="#">
-                                        @include('icons.download')
+                                        <x-icon.download></x-icon.cog>
                                     </a>
                                     <span class="text-xl">{{ $label->name }}</span>
                                 </div>
@@ -60,7 +60,7 @@
                     Generate your first Label!
                     <a href="/labels/create" class="btn mx-4">
                         <span>
-                            @include('icons.add')
+                            <x-icon.add></x-icon.cog>
                             Create Now
                         </span>
                     </a>

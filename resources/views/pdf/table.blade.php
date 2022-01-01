@@ -43,11 +43,13 @@
     @include('pdf.fonts')
 
 </style>
+@foreach($tables as $tableRows)
+<div>
 <table class="table">
     @foreach (array_chunk($tableRows, $set->label->settings['column_nos']) as $records)
         <tr>
             @foreach ($records as $record)
-                <td>
+                <td  style="width: 50%">
                     @foreach ($set->fields as $index => $field)
                         <p>
                             <strong style="{{ $field->css() }}">{{ $field->display_name }}</strong>
@@ -59,3 +61,6 @@
         </tr>
     @endforeach
 </table>
+</div>
+<div class="page-break"></div>
+@endforeach

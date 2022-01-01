@@ -37,7 +37,7 @@
             </div>
             <div class="pt-4">
                 <x-button wire:click="addNewSet">
-                    @include('icons.add')
+                    <x-icon.add class="w-6 h-6 mr-1"></x-icon.add>
                     Add New Set
                 </x-button>
             </div>

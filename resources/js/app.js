@@ -22,4 +22,12 @@ Livewire.on('showError', message => Swal.fire({
     timer: 3000
 }))
 
-Livewire.on('openLink', link => window.open(link));
+var instance = null
+var openLink = function(link) {
+    if(instance == null) {
+        instance = window.open(link);
+    } else {
+        instance.location = link;
+    }
+};
+Livewire.on('openLink', openLink);

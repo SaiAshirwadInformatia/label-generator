@@ -42,7 +42,7 @@
     @endif
     <div class="w-1/12">
         <x-button class="mt-6" wire:click="destroy">
-            @include('icons.trash')
+            <x-icon.trash></x-icon.trash>
             Delete
         </x-button>
     </div>

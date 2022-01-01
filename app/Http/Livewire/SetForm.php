@@ -16,7 +16,9 @@ class SetForm extends Component
     protected $rules = [
         'set.name' => 'required',
         'set.type' => 'required',
-        'set.columnName' => 'nullable'
+        'set.columnName' => 'nullable',
+        'set.settings.columns' => 'nullable',
+        'set.settings.differentPage' => 'nullable'
     ];
 
     protected $listeners = [
