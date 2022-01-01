@@ -14,6 +14,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "livewire/livewire": "^2.8",
+        "spatie/cpu-load-health-check": "^1.0",
         "spatie/laravel-health": "^1.7"
     },
     "require-dev": {

@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ReadyController;
 use App\Http\Livewire\LabelConfigure;
@@ -28,3 +29,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/download/{token}', [ReadyController::class, 'download'])->name('download');
+
+
+
+Route::get('health', HealthCheckResultsController::class);

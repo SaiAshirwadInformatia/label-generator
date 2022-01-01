@@ -57,11 +57,11 @@ return [
         'throttle_notifications_for_minutes' => 60,
 
         'mail' => [
-            'to' => 'your@example.com',
+            'to' => 'rohansakhale@gmail.com',
 
             'from' => [
-                'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-                'name' => env('MAIL_FROM_NAME', 'Example'),
+                'address' => env('MAIL_FROM_ADDRESS', 'support@saiashirwad.com'),
+                'name' => env('MAIL_FROM_NAME', 'Health Monitor'),
             ],
         ],
 
@@ -110,5 +110,5 @@ return [
      * - light: light mode
      * - dark: dark mode
      */
-    'theme' => 'light',
+    'theme' => 'dark',
 ];
