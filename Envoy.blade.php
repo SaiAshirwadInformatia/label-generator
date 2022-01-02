@@ -1,7 +1,8 @@
-@servers(['prod' => ['ec2-user@13.235.157.197']])
+@servers(['prod' => ['ec2-user@3.109.54.172']])
 
 @task('deploy', ['on' => 'prod'])
-    cd /www/wwwroot/label-generator.saiashirwad.com
+    cd /home/ec2-user/sites/label-generator.saiashirwad.com
     git pull origin main
+    composer install
     php artisan migrate --force
 @endtask
