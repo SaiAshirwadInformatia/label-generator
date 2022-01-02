@@ -30,10 +30,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/sets/{set}/preview', [LabelController::class, 'preview'])->name('labels.preview');
 
     Route::resource('users', UserController::class)->only('index', 'create', 'edit');
+
+    Route::get('/activate/{user}/reset', [ActivationController::class, 'update'])->name('activation.update');
 });
 
 Route::get('/activate/{user:ott}', [ActivationController::class, 'index'])->name('activation.index');
 Route::post('/activate/{user:ott}', [ActivationController::class, 'store'])->name('activation.store');
+
 Route::get('/download/{token}', [ReadyController::class, 'download'])->name('download');
 
 

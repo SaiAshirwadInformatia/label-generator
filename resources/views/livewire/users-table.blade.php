@@ -21,7 +21,7 @@
                                 <a href="{{ route('users.edit', ['user' => $user->id]) }}">
                                     <x-icon.edit></x-icon.edit>
                                 </a>
-                                <a href="#">
+                                <a href="{{ route('activation.update', ['user' => $user->id]) }}">
                                     <x-icon.lock></x-icon.lock>
                                 </a>
                                 <span class="text-xl">{{ $user->name }}</span>
