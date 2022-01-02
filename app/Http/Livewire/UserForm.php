@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class UserForm extends Component
@@ -14,7 +15,6 @@ class UserForm extends Component
         'user.name' => 'required',
         'user.email' => 'required|email',
         'user.company' => 'nullable',
-        'user.password' => 'nullable',
         'user.level' => 'required'
     ];
 
@@ -30,6 +30,9 @@ class UserForm extends Component
 
     public function submitForm()
     {
+        if (!$this->user->password) {
+            $this->user->password = Str::random();
+        }
         $this->validate();
 
         $this->user->save();

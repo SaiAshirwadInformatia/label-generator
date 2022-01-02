@@ -25,6 +25,9 @@
                                     <x-icon.lock></x-icon.lock>
                                 </a>
                                 <span class="text-xl">{{ $user->name }}</span>
+                                @if($user->id == auth()->user()->id)
+                                <span class="font-thin">(You)</span>
+                                @endif
                             </div>
                             <div class="flex mb-1">
                                 <div class="inline-flex shadow-md hover:shadow-lg focus:shadow-lg btn-group"

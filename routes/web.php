@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/activate/{user:ott}', [ActivationController::class, 'index'])->name('activation.index');
+Route::post('/activate/{user:ott}', [ActivationController::class, 'store'])->name('activation.store');
 Route::get('/download/{token}', [ReadyController::class, 'download'])->name('download');
 
 

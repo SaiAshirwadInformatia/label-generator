@@ -14,12 +14,6 @@
                 <label class="px-1 text-lg">Email</label>
                 <x-input wire:model.defer="user.email" class="w-full border p-1 mt-0"></x-input>
             </div>
-            @unless($user->id)
-                <div class="mb-2">
-                    <label class="px-1 text-lg">Password</label>
-                    <x-input type="password" wire:model.defer="user.password" class="w-full border p-1 mt-0"></x-input>
-                </div>
-            @endunless
             <div class="mb-2">
                 <label class="px-1 text-lg">Level</label>
                 <x-select wire:model.defer="user.level" class="w-full border p-1 mt-0" :options="$levels"></x-select>
