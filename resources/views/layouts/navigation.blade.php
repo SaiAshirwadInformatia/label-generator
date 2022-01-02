@@ -18,6 +18,11 @@
                     <x-nav-link :href="route('labels.create')" :active="request()->routeIs('labels.create')">
                         {{ __('Generate New Label') }}
                     </x-nav-link>
+                    @admin
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                        {{ __('Users') }}
+                    </x-nav-link>
+                    @endadmin
                 </div>
             </div>
 

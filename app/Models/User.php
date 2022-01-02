@@ -55,10 +55,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'company',
+        'name', 'email', 'password', 'company',
     ];
 
     /**
@@ -114,5 +111,15 @@ class User extends Authenticatable
 
     public function getTotalLabelsAttribute()
     {
+    }
+
+    public function isAdmin()
+    {
+        return $this->level == 'admin';
+    }
+
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes['password'] = bcrypt($value);
     }
 }

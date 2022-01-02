@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\ActivationController;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ReadyController;
+use App\Http\Controllers\UserController;
 use App\Http\Livewire\LabelConfigure;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +28,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/labels/create', [LabelController::class, 'create'])->name('labels.create');
     Route::get('/labels/{label}/configure', [LabelController::class, 'configure'])->name('labels.configure');
     Route::get('/sets/{set}/preview', [LabelController::class, 'preview'])->name('labels.preview');
+
+    Route::resource('users', UserController::class)->only('index', 'create', 'edit');
 });
 
+Route::get('/activate/{user:ott}', [ActivationController::class, 'index'])->name('activation.index');
 Route::get('/download/{token}', [ReadyController::class, 'download'])->name('download');
 
 

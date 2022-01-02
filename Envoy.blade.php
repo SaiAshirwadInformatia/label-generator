@@ -7,5 +7,6 @@
     php artisan down
     php artisan migrate --force
     php artisan queue:restart
+    php artisan optimize
     php artisan up
 @endtask

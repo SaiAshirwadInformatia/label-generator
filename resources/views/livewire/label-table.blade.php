@@ -23,7 +23,7 @@
                                         <x-icon.cog></x-icon.cog>
                                     </a>
                                     <a href="#">
-                                        <x-icon.download></x-icon.cog>
+                                        <x-icon.download></x-icon.download>
                                     </a>
                                     <span class="text-xl">{{ $label->name }}</span>
                                 </div>

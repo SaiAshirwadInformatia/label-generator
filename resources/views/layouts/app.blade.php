@@ -44,6 +44,30 @@
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
     @livewireScripts
+
+    
+    <script>
+        window.onload = () => {
+        @if(session()->has('success'))
+        Swal.fire({
+            title: 'Success!',
+            text: '{{ session()->get("success") }}',
+            icon: 'success',
+            confirmButtonText: 'Ok',
+            timer: 2000
+        })
+        @endif
+        @if(session()->has('error'))
+        Swal.fire({
+            title: 'Error!',
+            text: '{{ session()->get("error") }}',
+            icon: 'error',
+            confirmButtonText: 'Ok',
+            timer: 3000
+        })
+        @endif
+    };
+    </script>
 </body>
 
 </html>
