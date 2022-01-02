@@ -1,4 +1,4 @@
-@servers(['prod' => ['ec2-user@3.109.54.172']])
+@servers(['prod' => ['ec2-user@dashboard.saiashirwad.com']])
 
 @task('deploy', ['on' => 'prod'])
     cd /home/ec2-user/sites/label-generator.saiashirwad.com
