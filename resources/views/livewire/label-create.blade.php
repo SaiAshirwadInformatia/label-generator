@@ -41,7 +41,7 @@
                 <div class="w-4/12">
                     <x-label for="numbers" :value="__('Page Number')" />
                     <x-select wire:model.defer="numbers" id="numbers" class="block mt-1 w-full"
-                        :options="['' => 'Select', '0' => 'No', '1' => 'Yes']" />
+                        :options="['0' => 'No', '1' => 'Yes']" />
                     @error('numbers')
                         <span class="error">{{ $message }}</span>
                     @enderror
@@ -49,7 +49,7 @@
                 <div class="w-4/12">
                     <x-label for="column_nos" :value="__('Page Columns')" />
                     <x-select wire:model.defer="column_nos" id="column_nos" class="block mt-1 w-full"
-                        :options="['' => 'Select', 1 => 1, 2 => 2, 3 => 3, 4 => 4]" />
+                        :options="[1 => 1, 2 => 2, 3 => 3, 4 => 4]" />
                     @error('column_nos')
                         <span class="error">{{ $message }}</span>
                     @enderror
