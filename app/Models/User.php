@@ -122,4 +122,9 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($value);
     }
+
+    public function templates()
+    {
+        return $this->hasMany(Template::class);
+    }
 }

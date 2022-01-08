@@ -27,6 +27,10 @@ class LabelCreate extends Component
 
     public $size, $orientation, $numbers, $column_nos;
 
+    public $templateList;
+
+    public $template_id;
+
     /**
      * @var array
      */
@@ -36,8 +40,14 @@ class LabelCreate extends Component
         'size' => 'required',
         'orientation' => 'required',
         'numbers' => 'required',
-        'column_nos' => 'required'
+        'column_nos' => 'required',
+        'template_id' => 'nullable|integer'
     ];
+
+    public function mount()
+    {
+        $this->templateList = auth()->user()->templates()->select('name', 'id')->pluck('name', 'id')->toArray();
+    }
 
     public function updatedPath()
     {
@@ -62,7 +72,7 @@ class LabelCreate extends Component
         ];
         auth()->user()->labels()->save($label);
 
-        event(new LabelCreated($label));
+        event(new LabelCreated($label, $this->template_id));
 
         return redirect()->route('labels.configure', [
             'label' => $label->id,

@@ -95,4 +95,9 @@ class Label extends Model
     {
         return $this->hasManyThrough(Download::class, Set::class);
     }
+
+    public function template()
+    {
+        return $this->belongsTo(Template::class);
+    }
 }

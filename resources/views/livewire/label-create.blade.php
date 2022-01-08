@@ -55,6 +55,14 @@
                     @enderror
                 </div>
             </div>
+            @isset($templateList)
+                <div class="flex mt-2">
+                    <div class="w-1/3">
+                        <x-label for="template_id" :value="__('Create from Template')" />
+                        <x-select wire:model.defer="template_id" :options="$templateList"></x-select>
+                    </div>
+                </div>
+            @endisset
             <x-button class="mt-4">
                 <svg wire:loading class="animate-spin mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 24 24">

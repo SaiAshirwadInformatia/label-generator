@@ -12,18 +12,11 @@ class LabelCreated
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * @var mixed
-     */
-    public $label;
-
-    /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(Label $label)
+    public function __construct(public Label $label, public $template_id = null)
     {
-        $this->label = $label;
     }
-
 }

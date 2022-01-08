@@ -10,7 +10,7 @@
     </div>
     <div class="w-2/12">
         <x-label>Field Font</x-label>
-        <select wire:model="field.settings.font" class="w-10/12 select">
+        <select disabled wire:model="field.settings.font" class="w-10/12 select">
             @foreach ($fontsConfig as $fontKey => $font)
                 <option value="{{ $fontKey }}">{{ $font['name'] }}</option>
             @endforeach
@@ -18,7 +18,7 @@
     </div>
     <div class="w-2/12">
         <x-label>Font Weight</x-label>
-        <select wire:model="field.settings.type" class="w-10/12 select">
+        <select disabled wire:model="field.settings.type" class="w-10/12 select">
             @foreach ($fontsConfig[$field->settings['font']]['weight'] as $weightKey => $weightValue)
                 <option value="{{ $weightKey }}">{{ $weightValue }}</option>
             @endforeach
