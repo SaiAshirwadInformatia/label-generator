@@ -51,10 +51,17 @@
             @foreach ($records as $record)
                 <td  style="width: 50%">
                     @foreach ($set->fields as $index => $field)
+                        @if($field->type == 'EmptyRow')
+                        <p>
+                            <strong style="{{ $field->css() }}">&nbsp;</strong>
+                            <strong style="{{ $field->css() }}">&nbsp;</strong>
+                        </p>
+                        @else
                         <p>
                             <strong style="{{ $field->css() }}">{{ $field->display_name }}</strong>
                             <span style="{{ $field->css() }}">{{ $record[$index] }}</span>
                         </p>
+                        @endif
                     @endforeach
                 </td>
             @endforeach
