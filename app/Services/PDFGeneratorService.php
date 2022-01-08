@@ -73,7 +73,7 @@ class PDFGeneratorService
                     $row = [];
                     foreach ($set->fields as $field) {
                         $row[] = match ($field->type) {
-                            'Text' => $record[$field->name],
+                            'Text' => $record[$field->name] ?? "",
                             'Static' => $field->default,
                             'SubCount' => $subCount,
                             'Incremented' => $incremental++,
@@ -97,7 +97,7 @@ class PDFGeneratorService
                     $row = [];
                     foreach ($set->fields as $field) {
                         $row[] = match ($field->type) {
-                            'Text' => $record[$field->name],
+                            'Text' => $record[$field->name] ?? "",
                             'Static' => $field->default,
                             'Incremented' => $incremental++,
                             'Number' => intval($record[$field->name]),

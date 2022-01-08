@@ -2,6 +2,7 @@
 
 @task('deploy', ['on' => 'prod'])
     cd /home/ec2-user/sites/label-generator.saiashirwad.com
+    git reset --hard
     git pull origin main
     composer install
     php artisan down
