@@ -6,7 +6,7 @@
         </div>
         <div class="grow">
             <x-label class="font-bold">Different Page</x-label>
-            <x-select wire:model="set.settings.differentPage" :options="$columns"></x-select>
+            <x-select required wire:model="set.settings.differentPage" :options="$columns"></x-select>
         </div>
         <div class="grow">
             <x-label class="font-bold">Set Type</x-label>
@@ -41,9 +41,13 @@
         </div>
     </div>
     <hr class="my-8" />
-    @if ($set->fields->count())
-        @foreach ($set->fields as $field_index => $field)
-            @livewire('field-form', ['field' => $field], key($field->id))
+    @if ($set->fields()->count())
+        @foreach ($set->fields()->orderBy('sequence', 'ASC')->get() as $field_index => $field)
+            @livewire('field-form', [
+                'set' => $set,
+                'field' => $field,
+                'isLast' => $loop->last
+            ], key($field->id))
         @endforeach
     @else
         <div class="flex">

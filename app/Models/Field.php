@@ -42,12 +42,13 @@ class Field extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'display_name', 'type', 'default', 'settings'];
+    protected $fillable = ['name', 'display_name', 'type', 'default', 'settings', 'sequence'];
 
     /**
      * @var array
      */
     protected $casts = [
+        'sequence' => 'integer',
         'settings' => 'array',
     ];
 

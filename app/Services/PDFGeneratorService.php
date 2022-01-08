@@ -81,7 +81,8 @@ class PDFGeneratorService
                             'Float' => floatval($record[$field->name]),
                             'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
                             'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR' => 'Rs. ' . $record[$field->name]
+                            'INR' => 'Rs. ' . $record[$field->name],
+                            default => ""
                         };
                     }
                     $data[] = $row;
@@ -103,7 +104,8 @@ class PDFGeneratorService
                             'Float' => floatval($record[$field->name]),
                             'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
                             'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR' => 'Rs. ' . $record[$field->name]
+                            'INR' => 'Rs. ' . $record[$field->name],
+                            default => ""
                         };
                     }
                     $data[] = $row;

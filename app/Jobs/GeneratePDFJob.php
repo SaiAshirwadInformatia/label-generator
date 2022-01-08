@@ -41,7 +41,7 @@ class GeneratePDFJob implements ShouldQueue
      */
     public function handle()
     {
-        $service = new PDFGeneratorService();
+        $service = app()->make(PDFGeneratorService::class);
 
         $ready = new Ready();
         $ready->user_id = $this->set->label->user->id;

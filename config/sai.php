@@ -15,6 +15,7 @@ return [
         'Boolean' => 'Boolean',
         'dd/MM/YYYY' => 'dd/MM/YYYY',
         'INR' => 'INR',
+        'EmptyRow' => 'EmptyRow'
     ],
     'fonts' => [
         'Roboto' => [

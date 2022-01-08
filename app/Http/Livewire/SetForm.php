@@ -22,7 +22,7 @@ class SetForm extends Component
     ];
 
     protected $listeners = [
-        'fieldDeleted' => 'refresh'
+        'refreshSet' => 'refresh'
     ];
 
     public function updated()
@@ -69,6 +69,7 @@ class SetForm extends Component
             'type' => 'Regular',
             'size' => '12'
         ];
+        $field->sequence = $this->set->fields()->count() + 1;
         $this->set->fields()->save($field);
         $this->refresh();
     }
