@@ -14,7 +14,7 @@ use PDF;
 class LabelController extends Controller
 {
 
-    public const PREVIEW = 1000;
+    public const PREVIEW = 100;
 
     /**
      * Store a newly created resource in storage.
