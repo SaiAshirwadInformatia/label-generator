@@ -5,13 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Download;
 use App\Models\Ready;
 use Carbon\Carbon;
+use Exception;
 use Storage;
 
 class ReadyController extends Controller
 {
     public function download($token)
     {
-        $ready = Ready::find(decrypt($token));
+        try {
+            $id = decrypt($token);
+        } catch (Exception $e) {
+            abort(400, "Invalid download token");
+        }
+        $ready = Ready::findOrFail($id);
         $path = Storage::disk('local')->path($ready->path);
 
         $download = new Download();
@@ -23,7 +29,7 @@ class ReadyController extends Controller
 
         activity("downloads")
             ->performedOn($download)
-            ->causedBy(request()->ip())
+            // ->causedBy(request()->ip())
             ->event("downloaded")
             ->log("Downloaded " . $filename);
 
