@@ -32,6 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->only('index', 'create', 'edit');
 
     Route::get('/activate/{user}/reset', [ActivationController::class, 'update'])->name('activation.update');
+
+    Route::impersonate();
 });
 
 Route::get('/activate/{user:ott}', [ActivationController::class, 'index'])->name('activation.index');

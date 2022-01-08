@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Labels are entities to track Label creation initiated by User
@@ -44,6 +46,7 @@ use Illuminate\Database\Eloquent\Model;
 class Label extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     /**
      * @var array
@@ -63,6 +66,14 @@ class Label extends Model
      * @var array
      */
     protected $withCount = ['sets', 'fields', 'downloads'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName("labels");
+    }
 
     /**
      * @return mixed

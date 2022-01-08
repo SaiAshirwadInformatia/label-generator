@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * Set is a configuration within Label process for generating PDF's
@@ -38,6 +40,7 @@ use Illuminate\Database\Eloquent\Model;
 class Set extends Model
 {
     use HasFactory;
+    use LogsActivity;
 
     public const SINGLE  = 1;
     public const GROUPED = 2;
@@ -58,6 +61,14 @@ class Set extends Model
 
     protected $with = ['fields'];
 
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logFillable()
+            ->logOnlyDirty()
+            ->useLogName("sets");
+    }
+
     /**
      * @return mixed
      */
@@ -76,6 +87,5 @@ class Set extends Model
 
     public function fonts()
     {
-        
     }
 }

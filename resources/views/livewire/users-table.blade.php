@@ -24,6 +24,9 @@
                                 <a href="{{ route('activation.update', ['user' => $user->id]) }}">
                                     <x-icon.lock></x-icon.lock>
                                 </a>
+                                <a href="{{ route('impersonate', $user->id) }}">
+                                    <x-icon.login></x-icon.login>
+                                </a>
                                 <span class="text-xl">{{ $user->name }}</span>
                                 @if($user->id == auth()->user()->id)
                                 <span class="font-thin">(You)</span>

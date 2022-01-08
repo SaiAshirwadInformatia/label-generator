@@ -5,12 +5,16 @@ namespace App\Providers;
 use App\Events\LabelCreated;
 use App\Listeners\GenerateDefaultSet;
 use App\Listeners\GenerateLabelFields;
+use App\Listeners\UserImpersonatedListener;
+use App\Listeners\UserLeftImpersonationListener;
 use App\Models\User;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
+use Lab404\Impersonate\Events\LeaveImpersonation;
+use Lab404\Impersonate\Events\TakeImpersonation;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,6 +30,12 @@ class EventServiceProvider extends ServiceProvider
         LabelCreated::class => [
             GenerateLabelFields::class,
         ],
+        TakeImpersonation::class => [
+            UserImpersonatedListener::class
+        ],
+        LeaveImpersonation::class => [
+            UserLeftImpersonationListener::class
+        ]
     ];
 
     /**
