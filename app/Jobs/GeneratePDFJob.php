@@ -65,6 +65,13 @@ class GeneratePDFJob implements ShouldQueue
         $ready->records = $service->count();
         $ready->save();
 
+
+        activity("ready")
+            ->performedOn($ready)
+            ->causedBy($this->set->label->user)
+            ->event("generated")
+            ->log("PDF Ready with records " . $service->count());
+
         Mail::to($this->set->label->user)
             ->queue(new PDFReadyMail($ready));
     }
