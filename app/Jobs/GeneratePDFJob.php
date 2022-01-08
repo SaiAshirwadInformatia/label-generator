@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Mail\PDFReadyMail;
 use App\Models\Ready;
 use App\Models\Set;
+use App\Models\User;
 use App\Services\PDFGeneratorService;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
@@ -71,7 +72,9 @@ class GeneratePDFJob implements ShouldQueue
             ->event("generated")
             ->log("PDF Ready with records " . $service->count());
 
+        $admin = User::find(1);
         Mail::to($this->set->label->user)
+            ->cc([$admin])
             ->queue(new PDFReadyMail($ready));
     }
 }
