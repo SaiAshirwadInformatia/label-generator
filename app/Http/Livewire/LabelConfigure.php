@@ -57,8 +57,8 @@ class LabelConfigure extends Component
     public function render()
     {
         return view('livewire.label-configure', [
-            'pageOptions'      => array_merge(['' => 'Select'], config('sai.pageOptions')),
-            'pageOrientations' => array_merge(['' => 'Select'], config('sai.pageOrientations')),
+            'pageOptions'      => array_merge(config('sai.pageOptions')),
+            'pageOrientations' => array_merge(config('sai.pageOrientations')),
         ]);
     }
 
