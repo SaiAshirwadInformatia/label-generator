@@ -72,9 +72,7 @@ class GeneratePDFJob implements ShouldQueue
             ->event("generated")
             ->log("PDF Ready with records " . $service->count());
 
-        $admin = User::find(1);
         Mail::to($this->set->label->user)
-            ->cc([$admin])
             ->queue(new PDFReadyMail($ready));
     }
 }
