@@ -2,7 +2,7 @@
 
 ### If you are member of Sai Ashirwad Informatia, start directly with project clone.
 
-```
+```sh
 cd existing_repo
 git remote add origin https://gitlab.com/SaiAshirwadInformatia/projects/label-generator.git
 git branch -M main
