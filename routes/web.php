@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivationController;
+use App\Http\Controllers\ActivityLogsController;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ReadyController;
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->only('index', 'create', 'edit');
 
     Route::get('/activate/{user}/reset', [ActivationController::class, 'update'])->name('activation.update');
+
+    Route::get('/activity/logs', [ActivityLogsController::class, 'index'])->name('activity_logs.index');
 
     Route::impersonate();
 });

@@ -67,7 +67,7 @@ class SetForm extends Component
         $field->settings = [
             'font' => 'Roboto',
             'type' => 'Regular',
-            'size' => '12'
+            'size' => '15'
         ];
         $field->sequence = $this->set->fields()->count() + 1;
         $this->set->fields()->save($field);

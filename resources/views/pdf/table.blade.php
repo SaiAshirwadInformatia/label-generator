@@ -24,6 +24,7 @@
     }
 
     .table td {
+        max-width: 50%;
         border: 1px solid #000000;
         border-right: 2px;
     }
@@ -69,5 +70,7 @@
     @endforeach
 </table>
 </div>
+@if(!$loop->last)
 <div class="page-break"></div>
+@endif
 @endforeach
