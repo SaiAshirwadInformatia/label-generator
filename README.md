@@ -39,3 +39,15 @@ A handy Web Based Application for generating Labels that are often used for Deli
 | DD/MM/YYYY | Formats the date time value in "DD/MM/YYYY" format |
 | INR | Prefixes with "Rs. " |
 | EmptyRow | Adds a empty row in the table |
+
+## Contribution Guide
+
+[Read the guide and starting contributing](CONTRIBUTING.md)
+
+## Contibutors
+
+1. [Sai Ashirwad Informatia](https://saiashirwad.com)
+
+## LICENSE
+
+[MIT](LICENSE)
