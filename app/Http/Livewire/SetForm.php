@@ -12,6 +12,7 @@ class SetForm extends Component
 {
     public Set $set;
     public array $columns;
+    public string $previewLink;
 
     protected $rules = [
         'set.name' => 'required',
@@ -22,7 +23,8 @@ class SetForm extends Component
     ];
 
     protected $listeners = [
-        'refreshSet' => 'refresh'
+        'refreshSet' => 'refresh',
+        'hidePreview' => 'hide'
     ];
 
     public function updated()
@@ -47,9 +49,20 @@ class SetForm extends Component
         $this->emit('showSuccess', 'PDF generation added to queue, you should receive email shortly!');
     }
 
+    public function hide()
+    {
+        $this->previewLink = false;
+    }
+
     public function previewPDF()
     {
+        // $this->previewLink = route('labels.preview', ['set' => $this->set->id]);
         $this->emit('openLink', route('labels.preview', ['set' => $this->set->id]));
+    }
+
+    public function openWebPage()
+    {
+        $this->emit('openLink', route('labels.generate', ['set' => $this->set->id]));
     }
 
     public function destroy()

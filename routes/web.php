@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/labels/{label}/configure', [LabelController::class, 'configure'])->name('labels.configure');
     Route::get('/sets/{set}/preview', [LabelController::class, 'preview'])->name('labels.preview');
 
+    Route::get('/sets/{set}/generate', [LabelController::class, 'generate'])->name('labels.generate');
+
     Route::resource('users', UserController::class)->only('index', 'create', 'edit');
 
     Route::get('/activate/{user}/reset', [ActivationController::class, 'update'])->name('activation.update');

@@ -5,19 +5,44 @@ namespace App\Services;
 use App\Models\Set;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 
 class PDFGeneratorService
 {
     private int $recordCount = 0;
+    private bool $preview = false;
+    private int $previewLimit = 100;
+    private bool $html = false;
 
     public function count()
     {
         return $this->recordCount;
     }
 
-    public function process(Set $set, bool $preview = false, int $previewLimit = 100): \Barryvdh\DomPDF\PDF
+    public function html(): PDFGeneratorService
+    {
+        $this->html = true;
+
+        return $this;
+    }
+
+    public function preview(): PDFGeneratorService
+    {
+        $this->preview = true;
+
+        return $this;
+    }
+
+    public function limit(int $limit): PDFGeneratorService
+    {
+        $this->previewLimit = $limit;
+
+        return $this;
+    }
+
+    public function process(Set $set): \Barryvdh\DomPDF\PDF|string
     {
         $label = $set->label;
         $columns = [];
@@ -45,11 +70,11 @@ class PDFGeneratorService
                     $records[] = $record;
                     $previewRecords++;
                 }
-                if ($preview && $previewRecords >= $previewLimit) {
+                if ($this->preview && $previewRecords >= $this->previewLimit) {
                     break;
                 }
             }
-            if ($preview && $previewRecords >= $previewLimit) {
+            if ($this->preview && $previewRecords >= $this->previewLimit) {
                 break;
             }
         }
@@ -72,7 +97,7 @@ class PDFGeneratorService
                     $record = $record->first();
                     $row = [];
                     foreach ($set->fields as $field) {
-                        $row[] = match ($field->type) {
+                        $row[$field->name] = match ($field->type) {
                             'Text' => $record[$field->name] ?? "",
                             'Static' => $field->default,
                             'SubCount' => $subCount,
@@ -96,7 +121,7 @@ class PDFGeneratorService
                 foreach ($records as $record) {
                     $row = [];
                     foreach ($set->fields as $field) {
-                        $row[] = match ($field->type) {
+                        $row[$field->name] = match ($field->type) {
                             'Text' => $record[$field->name] ?? "",
                             'Static' => $field->default,
                             'Incremented' => $incremental++,
@@ -113,6 +138,10 @@ class PDFGeneratorService
                 $this->recordCount += count($data);
                 $tables[$stateName] = $data;
             }
+        }
+
+        if ($this->html) {
+            return view('pdf.table', compact('set', 'tables'));
         }
 
         return PDF::loadView('pdf.table', compact('set', 'tables'))

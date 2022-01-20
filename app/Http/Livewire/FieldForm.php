@@ -33,7 +33,8 @@ class FieldForm extends Component
         if (
             $propertyName == 'name' && (empty(trim($this->field->display_name)) ||
                 str_starts_with($this->field->display_name, 'Field ') ||
-                $this->field->display_name == $this->columns[$this->field->name]
+                (isset($this->columns[$this->field->name]) &&
+                    $this->field->display_name == $this->columns[$this->field->name])
             )
         ) {
             $this->field->display_name = $this->columns[$value];

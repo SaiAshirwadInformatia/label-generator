@@ -21,14 +21,14 @@ Livewire.on('showError', message => Swal.fire({
     icon: 'error',
     confirmButtonText: 'Ok',
     timer: 3000
-}))
+}));
 
-var instance = null
-var openLink = function(link) {
-    if(instance == null) {
-        instance = window.open(link);
+window.instance = null;
+var openLink = function (link) {
+    if (window.instance == null || window.instance.location !== undefined) {
+        window.instance = window.open(link);
     } else {
-        instance.location = link;
+        window.instance.location = link;
     }
 };
 Livewire.on('openLink', openLink);

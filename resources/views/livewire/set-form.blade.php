@@ -23,6 +23,10 @@
                 <x-icon.eye class="w-3 h-3"></x-icon.eye>
                 Preview PDF
             </x-small-button>
+            <x-small-button class="mt-3" wire:click="openWebPage">
+                <x-icon.eye class="w-3 h-3"></x-icon.eye>
+                Open Web Page
+            </x-small-button>
             <x-small-button class="mt-3" wire:click="generatePDF">
                 <x-icon.document class="w-3 h-3">
                     </x-icon.eye>
@@ -42,11 +46,12 @@
     </div>
     <hr class="my-8" />
     @if ($set->fields()->count())
-        @foreach ($set->fields()->orderBy('sequence', 'ASC')->get() as $field_index => $field)
+        @foreach ($set->fields()->orderBy('sequence', 'ASC')->get()
+    as $field_index => $field)
             @livewire('field-form', [
-                'set' => $set,
-                'field' => $field,
-                'isLast' => $loop->last
+            'set' => $set,
+            'field' => $field,
+            'isLast' => $loop->last
             ], key($field->id))
         @endforeach
     @else
@@ -54,4 +59,19 @@
             <h3>No Fields Added</h3>
         </div>
     @endif
+    {{-- <div x-data="{
+        showIFrame: !!@this.get('previewLink'),
+        hideIFrame: () => this.showIFrame = false && Livewire.emit('hidePreview')
+    }" x-show="showIFrame" class="fixed top-0 left-0 w-full h-screen flex align-center items-center">
+        <div class="w-1/2 mx-auto bg-white rounded shadow">
+            <div class="flex space-between">
+                <h3>Preview</h3>
+                <span>
+                    <x-icon.close @click="hideIFrame"></x-icon.close>
+                </span>
+            </div>
+            <iframe :src="@this.get('previewLink')" class="absolute inset-0 w-full h-full" frameboder="0"></iframe>
+        </div>
+
+    </div> --}}
 </x-container>

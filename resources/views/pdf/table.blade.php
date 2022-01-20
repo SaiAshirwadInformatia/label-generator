@@ -1,6 +1,7 @@
 <style>
     .table {
         width: 100%;
+        max-width: 100%;
         border-collapse: collapse;
     }
 
@@ -24,7 +25,8 @@
     }
 
     .table td {
-        max-width: 50%;
+        width: {{ 100 / intval($set->label->settings['column_nos']) }}%;
+        max-width: {{ 100 / intval($set->label->settings['column_nos']) }}%;
         border: 1px solid #000000;
         border-right: 2px;
     }
@@ -47,11 +49,11 @@
 @foreach($tables as $tableRows)
 <div>
 <table class="table">
-    @foreach (array_chunk($tableRows, $set->label->settings['column_nos']) as $records)
+    @foreach (array_chunk($tableRows, intval($set->label->settings['column_nos'])) as $records)
         <tr>
             @foreach ($records as $record)
-                <td  style="width: 50%">
-                    @foreach ($set->fields as $index => $field)
+                <td style="width: {{ 100 / intval($set->label->settings['column_nos']) }}%">
+                    @foreach ($set->fields()->orderBy('sequence')->get() as $field)
                         @if($field->type == 'EmptyRow')
                         <p>
                             <strong style="{{ $field->css() }}">&nbsp;</strong>
@@ -60,7 +62,7 @@
                         @else
                         <p>
                             <strong style="{{ $field->css() }}">{{ $field->display_name }}</strong>
-                            <span style="{{ $field->css() }}">{{ $record[$index] }}</span>
+                            <span style="{{ $field->css() }}">{{ $record[$field->name] }}</span>
                         </p>
                         @endif
                     @endforeach
