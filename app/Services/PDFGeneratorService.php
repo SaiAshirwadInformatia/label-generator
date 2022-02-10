@@ -96,6 +96,7 @@ class PDFGeneratorService
                     $subCount = count($record);
                     $record = $record->first();
                     $row = [];
+                    $emptyRows = 0;
                     foreach ($set->fields as $field) {
                         $row[$field->name] = match ($field->type) {
                             'Text' => $record[$field->name] ?? "",
@@ -109,6 +110,19 @@ class PDFGeneratorService
                             'INR' => 'Rs. ' . $record[$field->name],
                             default => ""
                         };
+                        if ($field->type == 'EmptyRow') {
+                            $emptyRows++;
+                        }
+
+                    }
+                    $emptyCount = 1;
+                    foreach ($row as $v) {
+                        if (empty(trim($v))) {
+                            $emptyCount++;
+                        }
+                    }
+                    if ($emptyCount >= $emptyRows + 3) {
+                        continue;
                     }
                     $data[] = $row;
                 }
@@ -132,6 +146,15 @@ class PDFGeneratorService
                             'INR' => 'Rs. ' . $record[$field->name],
                             default => ""
                         };
+                    }
+                    $emptyCount = 1;
+                    foreach ($row as $v) {
+                        if (empty(trim($v))) {
+                            $emptyCount++;
+                        }
+                    }
+                    if ($emptyCount >= 3) {
+                        continue;
                     }
                     $data[] = $row;
                 }

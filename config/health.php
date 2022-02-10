@@ -110,5 +110,5 @@ return [
      * - light: light mode
      * - dark: dark mode
      */
-    'theme' => 'dark',
+    'theme' => 'light',
 ];

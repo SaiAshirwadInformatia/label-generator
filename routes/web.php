@@ -48,4 +48,4 @@ Route::get('/download/{token}', [ReadyController::class, 'download'])->name('dow
 
 
 
-Route::get('health', HealthCheckResultsController::class);
+Route::get('health', HealthCheckResultsController::class)->name('health.index');
