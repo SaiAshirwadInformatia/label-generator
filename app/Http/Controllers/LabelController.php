@@ -6,6 +6,7 @@ use App\Models\Label;
 use App\Models\Set;
 use App\Services\PDFGeneratorService;
 use Illuminate\Http\Request;
+use Spatie\Browsershot\Browsershot;
 
 class LabelController extends Controller
 {
@@ -30,11 +31,15 @@ class LabelController extends Controller
 
     public function preview(Set $set)
     {
-        return app()->make(PDFGeneratorService::class)
+        $instance = app()->make(PDFGeneratorService::class)
             ->preview()
             ->limit(self::PREVIEW)
-            ->process($set)
-            ->stream();
+            ->process($set);
+
+        if ($instance instanceof Browsershot) {
+            return $instance->pdf();
+        }
+        return $instance->stream();
     }
 
     public function generate(Set $set)

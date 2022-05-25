@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use Spatie\Browsershot\Browsershot;
 
 class PDFGeneratorService
 {
@@ -42,7 +43,7 @@ class PDFGeneratorService
         return $this;
     }
 
-    public function process(Set $set): \Barryvdh\DomPDF\PDF|string
+    public function readExcel(Set $set): array
     {
         $label = $set->label;
         $columns = [];
@@ -78,10 +79,14 @@ class PDFGeneratorService
                 break;
             }
         }
-
         $reader->close();
         $reader = null;
 
+        return $records;
+    }
+
+    public function prepareTables(Set $set, &$records): array
+    {
         $tableRows = collect($records)->groupBy($set->settings['differentPage']);
         $records = null;
         $incremental = 1;
@@ -162,10 +167,28 @@ class PDFGeneratorService
                 $tables[$stateName] = $data;
             }
         }
+        return $tables;
+    }
+
+    public function process(Set $set): \Barryvdh\DomPDF\PDF|Browsershot|string
+    {
+        $label = $set->label;
+        $records = $this->readExcel($set);
+
+        $tables = $this->prepareTables($set, $records);
 
         if ($this->html) {
             return view('pdf.table', compact('set', 'tables'));
         }
+
+//        $browserShot = Browsershot::html(view('pdf.table', compact('set', 'tables'))->render())
+//            ->format($label->settings['size']);
+//
+//        if ($label->settings['orientation'] == 'landscape') {
+//            $browserShot->landscape();
+//        }
+//
+//        return $browserShot;
 
         return PDF::loadView('pdf.table', compact('set', 'tables'))
             ->setPaper($label->settings['size'], $label->settings['orientation']);

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;
@@ -68,21 +69,44 @@ class Field extends Model
         return $this->belongsTo(Set::class);
     }
 
-    public function css()
+    public function headerCss(): Attribute
     {
-        $css = [];
-        $font = 'font-family: ' . $this->settings['font'];
-        $font .= '-' . $this->settings['type'];
-        $css[] = strtolower($font);
-        if (isset($this->settings['size'])) {
-            $css[] = 'font-size: ' . $this->settings['size'] . 'px';
-        }
-        // if (isset($this->settings['color'])) {
-        //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];
-        // }
-        // if (isset($this->settings['background-color'])) {
-        //     $css[] = 'background-color:' . (str_starts_with($this->settings['background-color'], '#') ? '' : '#') . $this->settings['background-color'];
-        // }
-        return implode(';', $css);
+        return Attribute::get(function () {
+            $css = [];
+            $font = 'font-family: ' . $this->settings['font'];
+            $font .= '-' . $this->settings['type'];
+            $css[] = strtolower($font);
+            $css[] = 'font-size: 12px;';
+
+            // if (isset($this->settings['color'])) {
+            //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];
+            // }
+            // if (isset($this->settings['background-color'])) {
+            //     $css[] = 'background-color:' . (str_starts_with($this->settings['background-color'], '#') ? '' : '#') . $this->settings['background-color'];
+            // }
+
+            return implode(';', $css);
+        });
+    }
+
+    public function css(): Attribute
+    {
+        return Attribute::get(function () {
+            $css = [];
+            $font = 'font-family: ' . $this->settings['font'];
+            $font .= '-' . $this->settings['type'];
+            $css[] = strtolower($font);
+            if (isset($this->settings['size'])) {
+                $css[] = 'font-size: ' . $this->settings['size'] . 'px';
+            }
+            $css[] = 'display: inline;height: 100%';
+            // if (isset($this->settings['color'])) {
+            //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];
+            // }
+            // if (isset($this->settings['background-color'])) {
+            //     $css[] = 'background-color:' . (str_starts_with($this->settings['background-color'], '#') ? '' : '#') . $this->settings['background-color'];
+            // }
+            return implode(';', $css);
+        });
     }
 }

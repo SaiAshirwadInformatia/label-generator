@@ -8,9 +8,7 @@
     .table td p {
         border-bottom: 1px solid #000000;
         margin: 0;
-        padding: 0;
-        padding-bottom: 3px;
-        padding-top: 1px;
+        padding: 1px 0 3px;
     }
 
     .table td p:last-child {
@@ -21,7 +19,7 @@
         margin-left: 3px;
         margin-top: 2px;
         display: inline-block;
-        width: 35%;
+        width: 30%;
     }
 
     .table td {
@@ -56,13 +54,13 @@
                     @foreach ($set->fields()->orderBy('sequence')->get() as $field)
                         @if($field->type == 'EmptyRow')
                         <p>
-                            <strong style="{{ $field->css() }}">&nbsp;</strong>
-                            <strong style="{{ $field->css() }}">&nbsp;</strong>
+                            <strong style="{{ $field->headerCss }}">&nbsp;</strong>
+                            <strong style="{{ $field->css }}">&nbsp;</strong>
                         </p>
                         @else
                         <p>
-                            <strong style="{{ $field->css() }}">{{ $field->display_name }}</strong>
-                            <span style="{{ $field->css() }}">{{ $record[$field->name] }}</span>
+                            <strong style="{{ $field->headerCss }}">{{ $field->display_name }}</strong>
+                            <span style="{{ $field->css }}">{!! $record[$field->name] !!}</span>
                         </p>
                         @endif
                     @endforeach

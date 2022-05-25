@@ -23,7 +23,7 @@ class LabelTable extends Component
     {
         $user = auth()->user();
         return view('livewire.label-table', [
-            'labels' => $user->labels()->paginate($this->limit),
+            'labels' => $user->labels()->latest()->paginate($this->limit),
         ]);
     }
 }

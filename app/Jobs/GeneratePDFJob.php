@@ -23,16 +23,13 @@ class GeneratePDFJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public Set $set;
-
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Set $set)
+    public function __construct(public Set $set)
     {
-        $this->set = $set;
     }
 
     /**
