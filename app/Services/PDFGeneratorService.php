@@ -55,7 +55,7 @@ class PDFGeneratorService
         $reader->open($path);
 
         $previewRecords = 0;
-
+        $onlyOneSheet = 1;
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $row) {
                 // do stuff with the row
@@ -75,9 +75,7 @@ class PDFGeneratorService
                     break;
                 }
             }
-            if ($this->preview && $previewRecords >= $this->previewLimit) {
-                break;
-            }
+            break;
         }
         $reader->close();
         $reader = null;
@@ -87,11 +85,51 @@ class PDFGeneratorService
 
     public function prepareTables(Set $set, &$records): array
     {
-        $tableRows = collect($records)->groupBy($set->settings['differentPage']);
-        $records = null;
         $incremental = 1;
 
         $tables = [];
+
+        if (!isset($set->settings['differentPage']) or empty($set->settings['differentPage'])) {
+            $data = [];
+
+            foreach ($records as $record) {
+                $row = [];
+                $emptyRows = 0;
+                foreach ($set->fields as $field) {
+                    $row[$field->name] = match ($field->type) {
+                        'Text' => $record[$field->name] ?? "",
+                        'Static' => $field->default,
+                        'Incremented' => $incremental++,
+                        'Number' => intval($record[$field->name]),
+                        'Float' => floatval($record[$field->name]),
+                        'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
+                        'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                        'INR' => 'Rs. ' . $record[$field->name],
+                        default => ""
+                    };
+                    if ($field->type == 'EmptyRow') {
+                        $emptyRows++;
+                    }
+                }
+
+                $emptyCount = 1;
+                foreach ($row as $v) {
+                    if (empty(trim($v))) {
+                        $emptyCount++;
+                    }
+                }
+                if ($emptyCount >= $emptyRows + 3) {
+                    continue;
+                }
+                $data[] = $row;
+            }
+            $this->recordCount += count($data);
+            $tables['General'] = $data;
+
+            return $tables;
+        }
+        $tableRows = collect($records)->groupBy($set->settings['differentPage']);
+        $records = null;
 
         if ($set->type == Set::GROUPED) {
             foreach ($tableRows as $stateName => $records) {
@@ -139,6 +177,7 @@ class PDFGeneratorService
                 $data = [];
                 foreach ($records as $record) {
                     $row = [];
+                    $emptyRows = 0;
                     foreach ($set->fields as $field) {
                         $row[$field->name] = match ($field->type) {
                             'Text' => $record[$field->name] ?? "",
@@ -151,6 +190,10 @@ class PDFGeneratorService
                             'INR' => 'Rs. ' . $record[$field->name],
                             default => ""
                         };
+
+                        if ($field->type == 'EmptyRow') {
+                            $emptyRows++;
+                        }
                     }
                     $emptyCount = 1;
                     foreach ($row as $v) {
@@ -158,7 +201,7 @@ class PDFGeneratorService
                             $emptyCount++;
                         }
                     }
-                    if ($emptyCount >= 3) {
+                    if ($emptyCount >= $emptyRows + 3) {
                         continue;
                     }
                     $data[] = $row;

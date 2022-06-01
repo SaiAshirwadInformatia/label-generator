@@ -57,7 +57,7 @@
                             <x-icon.logout></x-icon.logout>
                             {{ __('Exit') }}
                         </x-dropdown-link>
-                    @else
+                        @else
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
