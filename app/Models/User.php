@@ -47,6 +47,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string $level
+ * @property string|null $ott
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Template[] $templates
+ * @property-read int|null $templates_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLevel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereOtt($value)
  */
 class User extends Authenticatable
 {

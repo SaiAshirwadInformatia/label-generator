@@ -19,11 +19,7 @@
         margin-left: 3px;
         margin-top: 2px;
         display: inline-block;
-        @if(str_starts_with($set->name, 'Doctor'))
-        width: 15%;
-        @else
-        width: 27%;
-        @endif
+        width: {{ $set->header_width }}%;
     }
 
     .table td {
@@ -58,12 +54,12 @@
                     @foreach ($set->fields()->orderBy('sequence')->get() as $field)
                         @if($field->type == 'EmptyRow')
                         <p>
-                            <strong style="{{ $field->headerCss }}">&nbsp;</strong>
+                            <strong style="{{ $field->headerCss }};font-size: {{ $set->header_font }}px">&nbsp;</strong>
                             <strong style="{{ $field->css }}">&nbsp;</strong>
                         </p>
                         @else
                         <p>
-                            <strong style="{{ $field->headerCss }}">{{ $field->display_name }}</strong>
+                            <strong style="{{ $field->headerCss }};font-size: {{ $set->header_font }}px">{{ $field->display_name }}</strong>
                             <span style="{{ $field->css }}">{!! $record[$field->name] !!}</span>
                         </p>
                         @endif

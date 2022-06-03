@@ -6,7 +6,19 @@
         </div>
         <div class="flex-shrink">
             <x-label class="font-bold">Limit</x-label>
-            <x-input wire:model="set.limit" type="text" class="w-10/12" />
+            <x-input wire:model="set.limit" type="number" step="1" class="w-6/12" />
+        </div>
+        <div class="flex-shrink">
+            <x-label class="font-bold">Incremental Start</x-label>
+            <x-input wire:model="set.incremental" type="number" step="1" class="w-6/12" />
+        </div>
+        <div class="flex-shrink">
+            <x-label class="font-bold">Header Width</x-label>
+            <x-input wire:model="set.header_width" type="number" step="1" class="w-6/12" />
+        </div>
+        <div class="flex-shrink">
+            <x-label class="font-bold">Header Font</x-label>
+            <x-input wire:model="set.header_font" type="number" step="1" class="w-10/12" />
         </div>
         <div class="flex-auto">
             <x-label class="font-bold">Different Page</x-label>

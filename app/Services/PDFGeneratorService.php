@@ -5,17 +5,16 @@ namespace App\Services;
 use App\Models\Set;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Spatie\Browsershot\Browsershot;
 
 class PDFGeneratorService
 {
-    private int $recordCount = 0;
-    private bool $preview = false;
+    private int $recordCount  = 0;
+    private bool $preview     = false;
     private int $previewLimit = 100;
-    private bool $html = false;
+    private bool $html        = false;
 
     public function count()
     {
@@ -45,7 +44,7 @@ class PDFGeneratorService
 
     public function readExcel(Set $set): array
     {
-        $label = $set->label;
+        $label   = $set->label;
         $columns = [];
         $records = [];
 
@@ -55,11 +54,11 @@ class PDFGeneratorService
         $reader->open($path);
 
         $previewRecords = 0;
-        $onlyOneSheet = 1;
+        $onlyOneSheet   = 1;
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $row) {
                 // do stuff with the row
-                $cells = $row->getCells();
+                $cells  = $row->getCells();
                 $record = [];
                 foreach ($cells as $cell) {
                     $record[] = $cell->getValue();
@@ -85,27 +84,27 @@ class PDFGeneratorService
 
     public function prepareTables(Set $set, &$records): array
     {
-        $incremental = 1;
+        $incremental = $set->incremental ?? 1;
 
         $tables = [];
 
-        if (!isset($set->settings['differentPage']) or empty($set->settings['differentPage'])) {
+        if ($set->type != Set::GROUPED && !isset($set->settings['differentPage']) or empty($set->settings['differentPage'])) {
             $data = [];
 
             foreach ($records as $record) {
-                $row = [];
+                $row       = [];
                 $emptyRows = 0;
                 foreach ($set->fields as $field) {
                     $row[$field->name] = match ($field->type) {
-                        'Text' => $record[$field->name] ?? "",
-                        'Static' => $field->default,
+                        'Text'        => $record[$field->name] ?? '',
+                        'Static'      => $field->default,
                         'Incremented' => $incremental++,
-                        'Number' => intval($record[$field->name]),
-                        'Float' => floatval($record[$field->name]),
-                        'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
-                        'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                        'INR' => 'Rs. ' . $record[$field->name],
-                        default => ""
+                        'Number'      => intval($record[$field->name]),
+                        'Float'       => floatval($record[$field->name]),
+                        'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
+                        'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                        'INR'         => 'Rs. ' . $record[$field->name],
+                        default       => ''
                     };
                     if ($field->type == 'EmptyRow') {
                         $emptyRows++;
@@ -130,41 +129,40 @@ class PDFGeneratorService
             return $tables;
         }
         $tableRows = collect($records)->groupBy($set->settings['differentPage']);
-        $records = null;
+        $records   = null;
 
         if ($set->type == Set::GROUPED) {
             foreach ($tableRows as $stateName => $records) {
                 $records = $records->groupBy($set->columnName);
-                $data = [];
+                $data    = [];
                 foreach ($records as $record) {
-                    $subCount = count($record);
-                    $record = $record->first();
-                    $row = [];
-                    $emptyRows = 0;
-                    $hasSubCount = '';
+                    $subCount       = count($record);
+                    $record         = $record->first();
+                    $row            = [];
+                    $emptyRows      = 0;
+                    $hasSubCount    = '';
                     $hasIncremented = '';
                     foreach ($set->fields as $field) {
                         if ($field->type == 'SubCount') {
                             $hasSubCount = $field->name;
-                        }elseif ($field->type == 'Incremented') {
+                        } elseif ($field->type == 'Incremented') {
                             $hasIncremented = $field->name;
                         }
                         $row[$field->name] = match ($field->type) {
-                            'Text' => $record[$field->name] ?? "",
-                            'Static' => $field->default,
-                            'SubCount' => $subCount,
+                            'Text'        => $record[$field->name] ?? '',
+                            'Static'      => $field->default,
+                            'SubCount'    => $subCount,
                             'Incremented' => $incremental++,
-                            'Number' => intval($record[$field->name]),
-                            'Float' => floatval($record[$field->name]),
-                            'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
-                            'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR' => 'Rs. ' . $record[$field->name],
-                            default => ""
+                            'Number'      => intval($record[$field->name]),
+                            'Float'       => floatval($record[$field->name]),
+                            'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
+                            'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                            'INR'         => 'Rs. ' . $record[$field->name],
+                            default       => ''
                         };
                         if ($field->type == 'EmptyRow') {
                             $emptyRows++;
                         }
-
                     }
                     $emptyCount = 1;
                     foreach ($row as $v) {
@@ -178,15 +176,15 @@ class PDFGeneratorService
 
                     if ($hasSubCount && !empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
                         $quantity = $subCount;
-                        for($i=0; $i<intval(ceil($subCount / $set->limit)); $i++) {
-                            if($quantity > $set->limit) {
+                        for ($i = 0; $i < intval(ceil($subCount / $set->limit)); $i++) {
+                            if ($quantity > $set->limit) {
                                 $row[$hasSubCount] = $set->limit;
                             } else {
                                 $row[$hasSubCount] = $quantity;
                             }
                             $quantity = $quantity - $set->limit;
-                            $data[] = $row;
-                            if($hasIncremented) {
+                            $data[]   = $row;
+                            if ($hasIncremented && $i != floor($subCount / $set->limit)) {
                                 $row[$hasIncremented] = $incremental;
                                 $incremental++;
                             }
@@ -202,19 +200,19 @@ class PDFGeneratorService
             foreach ($tableRows as $stateName => $records) {
                 $data = [];
                 foreach ($records as $record) {
-                    $row = [];
+                    $row       = [];
                     $emptyRows = 0;
                     foreach ($set->fields as $field) {
                         $row[$field->name] = match ($field->type) {
-                            'Text' => $record[$field->name] ?? "",
-                            'Static' => $field->default,
+                            'Text'        => $record[$field->name] ?? '',
+                            'Static'      => $field->default,
                             'Incremented' => $incremental++,
-                            'Number' => intval($record[$field->name]),
-                            'Float' => floatval($record[$field->name]),
-                            'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
-                            'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR' => 'Rs. ' . $record[$field->name],
-                            default => ""
+                            'Number'      => intval($record[$field->name]),
+                            'Float'       => floatval($record[$field->name]),
+                            'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
+                            'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                            'INR'         => 'Rs. ' . $record[$field->name],
+                            default       => ''
                         };
 
                         if ($field->type == 'EmptyRow') {
@@ -241,7 +239,7 @@ class PDFGeneratorService
 
     public function process(Set $set): \Barryvdh\DomPDF\PDF|Browsershot|string
     {
-        $label = $set->label;
+        $label   = $set->label;
         $records = $this->readExcel($set);
 
         $tables = $this->prepareTables($set, $records);
@@ -250,16 +248,18 @@ class PDFGeneratorService
             return view('pdf.table', compact('set', 'tables'));
         }
 
-//        $browserShot = Browsershot::html(view('pdf.table', compact('set', 'tables'))->render())
-//            ->format($label->settings['size']);
-//
-//        if ($label->settings['orientation'] == 'landscape') {
-//            $browserShot->landscape();
-//        }
-//
-//        return $browserShot;
+        if (app()->environment('local')) {
+            return PDF::loadView('pdf.table', compact('set', 'tables'))
+                ->setPaper($label->settings['size'], $label->settings['orientation']);
+        }
 
-        return PDF::loadView('pdf.table', compact('set', 'tables'))
-            ->setPaper($label->settings['size'], $label->settings['orientation']);
+        $browserShot = Browsershot::html(view('pdf.table', compact('set', 'tables'))->render())
+            ->format($label->settings['size']);
+
+        if ($label->settings['orientation'] == 'landscape') {
+            $browserShot->landscape();
+        }
+
+        return $browserShot;
     }
 }

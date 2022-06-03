@@ -6,7 +6,6 @@ use App\Jobs\GeneratePDFJob;
 use App\Models\Field;
 use App\Models\Set;
 use Livewire\Component;
-use Log;
 
 class SetForm extends Component
 {
@@ -15,17 +14,20 @@ class SetForm extends Component
     public string $previewLink;
 
     protected $rules = [
-        'set.name' => 'required',
-        'set.type' => 'required',
-        'set.columnName' => 'nullable',
-        'set.limit' => 'nullable|numeric',
-        'set.settings.columns' => 'nullable',
-        'set.settings.differentPage' => 'nullable'
+        'set.name'                   => 'required',
+        'set.type'                   => 'required',
+        'set.columnName'             => 'nullable',
+        'set.limit'                  => 'nullable|numeric',
+        'set.incremental'            => 'nullable|numeric',
+        'set.header_width'           => 'nullable|numeric',
+        'set.header_font'            => 'nullable|numeric',
+        'set.settings.columns'       => 'nullable',
+        'set.settings.differentPage' => 'nullable',
     ];
 
     protected $listeners = [
-        'refreshSet' => 'refresh',
-        'hidePreview' => 'hide'
+        'refreshSet'  => 'refresh',
+        'hidePreview' => 'hide',
     ];
 
     public function updated()
@@ -74,14 +76,14 @@ class SetForm extends Component
 
     public function addField()
     {
-        $field = new Field();
-        $field->name = 'Field ' . $this->set->fields->count() + 1;
+        $field               = new Field();
+        $field->name         = 'Field ' . $this->set->fields->count() + 1;
         $field->display_name = $field->name;
-        $field->type = 'Text';
-        $field->settings = [
+        $field->type         = 'Text';
+        $field->settings     = [
             'font' => 'Roboto',
             'type' => 'Regular',
-            'size' => '15'
+            'size' => '15',
         ];
         $field->sequence = $this->set->fields()->count() + 1;
         $this->set->fields()->save($field);

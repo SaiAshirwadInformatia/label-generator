@@ -21,6 +21,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $set_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
@@ -34,6 +35,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
+ * @property int $sequence
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
+ * @property-read int|null $activities_count
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereSequence($value)
  */
 class Field extends Model
 {
@@ -58,7 +65,7 @@ class Field extends Model
         return LogOptions::defaults()
             ->logFillable()
             ->logOnlyDirty()
-            ->useLogName("fields");
+            ->useLogName('fields');
     }
 
     /**
@@ -72,15 +79,10 @@ class Field extends Model
     public function headerCss(): Attribute
     {
         return Attribute::get(function () {
-            $css = [];
+            $css  = [];
             $font = 'font-family: ' . $this->settings['font'];
             $font .= '-' . $this->settings['type'];
             $css[] = strtolower($font);
-            if (str_starts_with($this->set->name, 'Doctor')) {
-                $css[] = 'font-size: 11px;';
-            } else {
-                $css[] = 'font-size: 12px;';
-            }
 
             // if (isset($this->settings['color'])) {
             //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];
@@ -96,7 +98,7 @@ class Field extends Model
     public function css(): Attribute
     {
         return Attribute::get(function () {
-            $css = [];
+            $css  = [];
             $font = 'font-family: ' . $this->settings['font'];
             $font .= '-' . $this->settings['type'];
             $css[] = strtolower($font);
