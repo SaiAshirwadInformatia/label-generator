@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Set;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
+use Barryvdh\Snappy\PdfWrapper;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -239,7 +240,7 @@ class PDFGeneratorService
         return $tables;
     }
 
-    public function process(Set $set): \Barryvdh\DomPDF\PDF
+    public function process(Set $set): \Barryvdh\DomPDF\PDF|PdfWrapper
     {
         $label   = $set->label;
         $records = $this->readExcel($set);
