@@ -7,6 +7,7 @@
     "require": {
         "php": "^8.0",
         "barryvdh/laravel-dompdf": "^1.0",
+        "barryvdh/laravel-snappy": "^1.0",
         "box/spout": "^3.3",
         "guzzlehttp/guzzle": "^7.0.1",
         "lab404/laravel-impersonate": "^1.7",
@@ -16,7 +17,6 @@
         "livewire/livewire": "^2.10",
         "predis/predis": "^1.1",
         "sentry/sentry-laravel": "^2.11",
-        "spatie/browsershot": "^3.54",
         "spatie/cpu-load-health-check": "^1.0",
         "spatie/laravel-activitylog": "^4.3",
         "spatie/laravel-health": "^1.7"

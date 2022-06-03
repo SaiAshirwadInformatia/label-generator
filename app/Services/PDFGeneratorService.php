@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Models\Set;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-use PDF;
+
 use Spatie\Browsershot\Browsershot;
 
 class PDFGeneratorService
@@ -237,7 +239,7 @@ class PDFGeneratorService
         return $tables;
     }
 
-    public function process(Set $set): \Barryvdh\DomPDF\PDF|Browsershot|string
+    public function process(Set $set): \Barryvdh\DomPDF\PDF
     {
         $label   = $set->label;
         $records = $this->readExcel($set);
@@ -249,17 +251,23 @@ class PDFGeneratorService
         }
 
         if (app()->environment('local')) {
-            return PDF::loadView('pdf.table', compact('set', 'tables'))
+            return Pdf::loadView('pdf.table', compact('set', 'tables'))
                 ->setPaper($label->settings['size'], $label->settings['orientation']);
         }
 
-        $browserShot = Browsershot::html(view('pdf.table', compact('set', 'tables'))->render())
-            ->format($label->settings['size']);
+        return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
+            ->setPaper($label->settings['size'], $label->settings['orientation']);
 
-        if ($label->settings['orientation'] == 'landscape') {
-            $browserShot->landscape();
-        }
 
-        return $browserShot;
+//
+//
+//        $browserShot = Browsershot::html(view('pdf.table', compact('set', 'tables'))->render())
+//            ->format($label->settings['size']);
+//
+//        if ($label->settings['orientation'] == 'landscape') {
+//            $browserShot->landscape();
+//        }
+//
+//        return $browserShot;
     }
 }
