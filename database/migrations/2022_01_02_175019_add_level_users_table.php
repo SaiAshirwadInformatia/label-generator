@@ -15,12 +15,12 @@ class AddLevelUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::whenTableDoesntHaveColumn('users', 'level', function (Blueprint $table) {
             $table->string('level', 24)->default('user')->after('id');
         });
 
-        $user = User::first();
-        $user->level = 'admin';
+        $user                    = User::first();
+        $user->level             = 'admin';
         $user->email_verified_at = Carbon::now();
         $user->save();
     }
