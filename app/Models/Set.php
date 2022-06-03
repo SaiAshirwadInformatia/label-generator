@@ -48,7 +48,7 @@ class Set extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'type', 'columnName', 'settings'];
+    protected $fillable = ['name', 'type', 'columnName', 'settings', 'limit'];
 
     /**
      * @var array
@@ -57,6 +57,7 @@ class Set extends Model
         'type'          => 'integer',
         'is_downloaded' => 'boolean',
         'settings'      => 'array',
+        'limit' => 'integer'
     ];
 
     protected $with = ['fields'];

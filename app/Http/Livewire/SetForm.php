@@ -18,6 +18,7 @@ class SetForm extends Component
         'set.name' => 'required',
         'set.type' => 'required',
         'set.columnName' => 'nullable',
+        'set.limit' => 'nullable|numeric',
         'set.settings.columns' => 'nullable',
         'set.settings.differentPage' => 'nullable'
     ];

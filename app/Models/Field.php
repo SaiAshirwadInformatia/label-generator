@@ -76,7 +76,11 @@ class Field extends Model
             $font = 'font-family: ' . $this->settings['font'];
             $font .= '-' . $this->settings['type'];
             $css[] = strtolower($font);
-            $css[] = 'font-size: 12px;';
+            if (str_starts_with($this->set->name, 'Doctor')) {
+                $css[] = 'font-size: 11px;';
+            } else {
+                $css[] = 'font-size: 12px;';
+            }
 
             // if (isset($this->settings['color'])) {
             //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];

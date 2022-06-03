@@ -19,7 +19,11 @@
         margin-left: 3px;
         margin-top: 2px;
         display: inline-block;
-        width: 30%;
+        @if(str_starts_with($set->name, 'Doctor'))
+        width: 15%;
+        @else
+        width: 27%;
+        @endif
     }
 
     .table td {

@@ -121,6 +121,7 @@ class PDFGeneratorService
                 if ($emptyCount >= $emptyRows + 3) {
                     continue;
                 }
+
                 $data[] = $row;
             }
             $this->recordCount += count($data);
@@ -140,7 +141,14 @@ class PDFGeneratorService
                     $record = $record->first();
                     $row = [];
                     $emptyRows = 0;
+                    $hasSubCount = '';
+                    $hasIncremented = '';
                     foreach ($set->fields as $field) {
+                        if ($field->type == 'SubCount') {
+                            $hasSubCount = $field->name;
+                        }elseif ($field->type == 'Incremented') {
+                            $hasIncremented = $field->name;
+                        }
                         $row[$field->name] = match ($field->type) {
                             'Text' => $record[$field->name] ?? "",
                             'Static' => $field->default,
@@ -167,7 +175,25 @@ class PDFGeneratorService
                     if ($emptyCount >= $emptyRows + 3) {
                         continue;
                     }
-                    $data[] = $row;
+
+                    if ($hasSubCount && !empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
+                        $quantity = $subCount;
+                        for($i=0; $i<intval(ceil($subCount / $set->limit)); $i++) {
+                            if($quantity > $set->limit) {
+                                $row[$hasSubCount] = $set->limit;
+                            } else {
+                                $row[$hasSubCount] = $quantity;
+                            }
+                            $quantity = $quantity - $set->limit;
+                            $data[] = $row;
+                            if($hasIncremented) {
+                                $row[$hasIncremented] = $incremental;
+                                $incremental++;
+                            }
+                        }
+                    } else {
+                        $data[] = $row;
+                    }
                 }
                 $this->recordCount += count($data);
                 $tables[$stateName] = $data;
