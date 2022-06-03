@@ -20,6 +20,9 @@ class AddLevelUsersTable extends Migration
         });
 
         $user                    = User::first();
+        if (!$user) {
+            return;
+        }
         $user->level             = 'admin';
         $user->email_verified_at = Carbon::now();
         $user->save();
