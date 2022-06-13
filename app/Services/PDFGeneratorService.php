@@ -9,7 +9,7 @@ use Barryvdh\Snappy\PdfWrapper;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\View\View;
 use Spatie\Browsershot\Browsershot;
 
 class PDFGeneratorService
@@ -91,7 +91,7 @@ class PDFGeneratorService
 
         $tables = [];
 
-        if ($set->type != Set::GROUPED && !isset($set->settings['differentPage']) or empty($set->settings['differentPage'])) {
+        if ($set->type != Set::GROUPED && !isset($set->settings['differentPage'])) {
             $data = [];
 
             foreach ($records as $record) {
@@ -131,10 +131,12 @@ class PDFGeneratorService
 
             return $tables;
         }
+
         $tableRows = collect($records)->groupBy($set->settings['differentPage']);
         $records   = null;
 
         if ($set->type == Set::GROUPED) {
+            $index = 0;
             foreach ($tableRows as $stateName => $records) {
                 $records = $records->groupBy($set->columnName);
                 $data    = [];
@@ -197,9 +199,14 @@ class PDFGeneratorService
                     }
                 }
                 $this->recordCount += count($data);
-                $tables[$stateName] = $data;
+                if (!empty($stateName)) {
+                    $tables[$stateName] = $data;
+                } else {
+                    $tables[$index++] = $data;
+                }
             }
         } else {
+            $index = 0;
             foreach ($tableRows as $stateName => $records) {
                 $data = [];
                 foreach ($records as $record) {
@@ -234,13 +241,17 @@ class PDFGeneratorService
                     $data[] = $row;
                 }
                 $this->recordCount += count($data);
-                $tables[$stateName] = $data;
+                if (!empty($stateName)) {
+                    $tables[$stateName] = $data;
+                } else {
+                    $tables[$index++] = $data;
+                }
             }
         }
         return $tables;
     }
 
-    public function process(Set $set): \Barryvdh\DomPDF\PDF|PdfWrapper
+    public function process(Set $set): \Barryvdh\DomPDF\PDF|PdfWrapper|View
     {
         $label   = $set->label;
         $records = $this->readExcel($set);
@@ -258,7 +269,6 @@ class PDFGeneratorService
 
         return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
             ->setPaper($label->settings['size'], $label->settings['orientation']);
-
 
 //
 //
