@@ -1,4 +1,6 @@
 <style>
+    @page { margin: 8px; }
+    body { margin: 0px; }
     .table {
         width: 100%;
         max-width: 100%;

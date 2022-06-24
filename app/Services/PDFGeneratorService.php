@@ -16,7 +16,7 @@ class PDFGeneratorService
 {
     private int $recordCount  = 0;
     private bool $preview     = false;
-    private int $previewLimit = 100;
+    private int $previewLimit = 50;
     private bool $html        = false;
 
     public function count()
@@ -132,8 +132,12 @@ class PDFGeneratorService
             return $tables;
         }
 
-        $tableRows = collect($records)->groupBy($set->settings['differentPage']);
-        $records   = null;
+        if (isset($set->settings['differentPage'])) {
+            $tableRows = collect($records)->groupBy($set->settings['differentPage']);
+        } else {
+            $tableRows = ['General' => collect($records)];
+        }
+        $records = null;
 
         if ($set->type == Set::GROUPED) {
             $index = 0;
