@@ -2,8 +2,9 @@
     @page { margin: 8px; }
     body { margin: 0px; }
     .table {
-        width: 100%;
-        max-width: 100%;
+        margin: 8px auto 60px auto;
+        width: 99%;
+        max-width: 99%;
         border-collapse: collapse;
     }
 
@@ -25,8 +26,8 @@
     }
 
     .table td {
-        width: {{ 100 / intval($set->label->settings['column_nos']) }}%;
-        max-width: {{ 100 / intval($set->label->settings['column_nos']) }}%;
+        width: {{ floor(100 / intval($set->label->settings['column_nos'])) }}%;
+        max-width: {{ floor(100 / intval($set->label->settings['column_nos'])) }}%;
         border: 1px solid #000000;
         border-right: 2px;
     }
@@ -47,12 +48,12 @@
 
 </style>
 @foreach($tables as $tableRows)
-<div>
+<div class="display: block;width: 100%">
 <table class="table">
     @foreach (array_chunk($tableRows, intval($set->label->settings['column_nos'])) as $records)
         <tr>
-            @foreach ($records as $record)
-                <td style="width: {{ 100 / intval($set->label->settings['column_nos']) }}%">
+            @foreach ($records as $index => $record)
+                <td>
                     @foreach ($set->fields()->orderBy('sequence')->get() as $field)
                         @if($field->type == 'EmptyRow')
                         <p>
@@ -67,12 +68,19 @@
                         @endif
                     @endforeach
                 </td>
+                @if($loop->index == 0 && $loop->last)
+                <td></td>
+                <td></td>
+                @elseif($loop->index == 1 && $loop->last)
+                <td></td>
+                @endif
             @endforeach
         </tr>
     @endforeach
 </table>
 </div>
 @if(!$loop->last)
-<div class="page-break"></div>
+{{--<div class="page-break"></div>--}}
+<div style="margin-bottom: 60px"></div>
 @endif
 @endforeach

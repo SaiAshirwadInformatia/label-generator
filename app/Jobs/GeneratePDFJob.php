@@ -48,7 +48,9 @@ class GeneratePDFJob implements ShouldQueue
         if (!Storage::disk('local')->exists($directory)) {
             Storage::disk('local')->makeDirectory($directory);
         }
-        $fileName   = $directory . DIRECTORY_SEPARATOR . time() . '.pdf';
+        $fileName = $directory . DIRECTORY_SEPARATOR . str($this->set->name)->camel()->ucfirst();
+        $fileName .= now()->format('d-m-Y') . '.pdf';
+
         $outputPath = Storage::disk('local')->path($fileName);
 
         $ready->path       = $fileName;

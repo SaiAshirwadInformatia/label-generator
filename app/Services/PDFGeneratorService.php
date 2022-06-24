@@ -73,14 +73,15 @@ class PDFGeneratorService
                     $records[] = $record;
                     $previewRecords++;
                 }
-                if ($this->preview && $previewRecords >= $this->previewLimit) {
-                    break;
-                }
             }
             break;
         }
         $reader->close();
         $reader = null;
+
+        if ($this->preview) {
+            $records = collect($records)->random($this->previewLimit)->toArray();
+        }
 
         return $records;
     }
