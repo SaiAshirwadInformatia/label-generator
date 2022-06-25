@@ -14,10 +14,13 @@ use Spatie\Browsershot\Browsershot;
 
 class PDFGeneratorService
 {
-    private int $recordCount  = 0;
-    private bool $preview     = false;
+    private int $recordCount = 0;
+
+    private bool $preview = false;
+
     private int $previewLimit = 50;
-    private bool $html        = false;
+
+    private bool $html = false;
 
     public function count()
     {
@@ -47,7 +50,7 @@ class PDFGeneratorService
 
     public function readExcel(Set $set): array
     {
-        $label   = $set->label;
+        $label = $set->label;
         $columns = [];
         $records = [];
 
@@ -57,11 +60,11 @@ class PDFGeneratorService
         $reader->open($path);
 
         $previewRecords = 0;
-        $onlyOneSheet   = 1;
+        $onlyOneSheet = 1;
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $row) {
                 // do stuff with the row
-                $cells  = $row->getCells();
+                $cells = $row->getCells();
                 $record = [];
                 foreach ($cells as $cell) {
                     $record[] = $cell->getValue();
@@ -92,11 +95,11 @@ class PDFGeneratorService
 
         $tables = [];
 
-        if ($set->type != Set::GROUPED && !isset($set->settings['differentPage'])) {
+        if ($set->type != Set::GROUPED && ! isset($set->settings['differentPage'])) {
             $data = [];
 
             foreach ($records as $record) {
-                $row       = [];
+                $row = [];
                 $emptyRows = 0;
                 foreach ($set->fields as $field) {
                     $row[$field->name] = match ($field->type) {
@@ -107,7 +110,7 @@ class PDFGeneratorService
                         'Float'       => floatval($record[$field->name]),
                         'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
                         'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                        'INR'         => 'Rs. ' . $record[$field->name],
+                        'INR'         => 'Rs. '.$record[$field->name],
                         default       => ''
                     };
                     if ($field->type == 'EmptyRow') {
@@ -144,13 +147,13 @@ class PDFGeneratorService
             $index = 0;
             foreach ($tableRows as $stateName => $records) {
                 $records = $records->groupBy($set->columnName);
-                $data    = [];
+                $data = [];
                 foreach ($records as $record) {
-                    $subCount       = count($record);
-                    $record         = $record->first();
-                    $row            = [];
-                    $emptyRows      = 0;
-                    $hasSubCount    = '';
+                    $subCount = count($record);
+                    $record = $record->first();
+                    $row = [];
+                    $emptyRows = 0;
+                    $hasSubCount = '';
                     $hasIncremented = '';
                     foreach ($set->fields as $field) {
                         if ($field->type == 'SubCount') {
@@ -167,7 +170,7 @@ class PDFGeneratorService
                             'Float'       => floatval($record[$field->name]),
                             'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
                             'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR'         => 'Rs. ' . $record[$field->name],
+                            'INR'         => 'Rs. '.$record[$field->name],
                             default       => ''
                         };
                         if ($field->type == 'EmptyRow') {
@@ -184,7 +187,7 @@ class PDFGeneratorService
                         continue;
                     }
 
-                    if ($hasSubCount && !empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
+                    if ($hasSubCount && ! empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
                         $quantity = $subCount;
                         for ($i = 0; $i < intval(ceil($subCount / $set->limit)); $i++) {
                             if ($quantity > $set->limit) {
@@ -193,7 +196,7 @@ class PDFGeneratorService
                                 $row[$hasSubCount] = $quantity;
                             }
                             $quantity = $quantity - $set->limit;
-                            $data[]   = $row;
+                            $data[] = $row;
                             if ($hasIncremented && $i != floor($subCount / $set->limit)) {
                                 $row[$hasIncremented] = $incremental;
                                 $incremental++;
@@ -204,7 +207,7 @@ class PDFGeneratorService
                     }
                 }
                 $this->recordCount += count($data);
-                if (!empty($stateName)) {
+                if (! empty($stateName)) {
                     $tables[$stateName] = $data;
                 } else {
                     $tables[$index++] = $data;
@@ -215,7 +218,7 @@ class PDFGeneratorService
             foreach ($tableRows as $stateName => $records) {
                 $data = [];
                 foreach ($records as $record) {
-                    $row       = [];
+                    $row = [];
                     $emptyRows = 0;
                     foreach ($set->fields as $field) {
                         $row[$field->name] = match ($field->type) {
@@ -226,7 +229,7 @@ class PDFGeneratorService
                             'Float'       => floatval($record[$field->name]),
                             'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
                             'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR'         => 'Rs. ' . $record[$field->name],
+                            'INR'         => 'Rs. '.$record[$field->name],
                             default       => ''
                         };
 
@@ -246,19 +249,20 @@ class PDFGeneratorService
                     $data[] = $row;
                 }
                 $this->recordCount += count($data);
-                if (!empty($stateName)) {
+                if (! empty($stateName)) {
                     $tables[$stateName] = $data;
                 } else {
                     $tables[$index++] = $data;
                 }
             }
         }
+
         return $tables;
     }
 
     public function process(Set $set): \Barryvdh\DomPDF\PDF|PdfWrapper|View
     {
-        $label   = $set->label;
+        $label = $set->label;
         $records = $this->readExcel($set);
 
         $tables = $this->prepareTables($set, $records);

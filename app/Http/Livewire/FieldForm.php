@@ -5,7 +5,6 @@ namespace App\Http\Livewire;
 use App\Models\Field;
 use App\Models\Set;
 use Livewire\Component;
-use Log;
 
 class FieldForm extends Component
 {
@@ -24,7 +23,7 @@ class FieldForm extends Component
         'field.default' => 'nullable',
         'field.settings.font' => 'required',
         'field.settings.type' => 'required',
-        'field.settings.size' => 'required'
+        'field.settings.size' => 'required',
     ];
 
     public function updating($propertyName, $value)
@@ -79,7 +78,7 @@ class FieldForm extends Component
         $sequence--;
 
         $this->set->fields()->where('sequence', $sequence)->update([
-            'sequence' => $this->field->sequence
+            'sequence' => $this->field->sequence,
         ]);
 
         $this->field->sequence = $sequence;
@@ -97,7 +96,7 @@ class FieldForm extends Component
         $sequence++;
 
         $this->set->fields()->where('sequence', $sequence)->update([
-            'sequence' => $this->field->sequence
+            'sequence' => $this->field->sequence,
         ]);
 
         $this->field->sequence = $sequence;

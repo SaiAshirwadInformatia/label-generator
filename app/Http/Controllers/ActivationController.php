@@ -19,7 +19,7 @@ class ActivationController extends Controller
     public function store(Request $request, User $user)
     {
         $request->validate([
-            'password' => 'required|min:6'
+            'password' => 'required|min:6',
         ]);
 
         $user->ott = null;
@@ -29,7 +29,7 @@ class ActivationController extends Controller
 
         auth()->login($user);
 
-        session()->flash('success', "Your account activated successfully");
+        session()->flash('success', 'Your account activated successfully');
 
         return redirect()->route('dashboard');
     }

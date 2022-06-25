@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $ip
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Download newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Download newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Download query()

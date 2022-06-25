@@ -40,20 +40,21 @@ class GeneratePDFJob implements ShouldQueue
     {
         $service = app()->make(PDFGeneratorService::class);
 
-        $ready          = new Ready();
+        $ready = new Ready();
         $ready->user_id = $this->set->label->user->id;
-        $ready->set_id  = $this->set->id;
+        $ready->set_id = $this->set->id;
 
-        $directory = Carbon::now()->format('Y' . DIRECTORY_SEPARATOR . 'm');
-        if (!Storage::disk('local')->exists($directory)) {
+        $directory = Carbon::now()->format('Y'.DIRECTORY_SEPARATOR.'m');
+        $directory .= DIRECTORY_SEPARATOR.str($this->set->label->name)->camel()->ucfirst();
+        if (! Storage::disk('local')->exists($directory)) {
             Storage::disk('local')->makeDirectory($directory);
         }
-        $fileName = $directory . DIRECTORY_SEPARATOR . str($this->set->name)->camel()->ucfirst();
-        $fileName .= now()->format('d-m-Y') . '.pdf';
+        $fileName = $directory.DIRECTORY_SEPARATOR.str($this->set->name)->camel()->ucfirst();
+        $fileName .= '-'.now()->format('d-m-Y-H-i-A').'.pdf';
 
         $outputPath = Storage::disk('local')->path($fileName);
 
-        $ready->path       = $fileName;
+        $ready->path = $fileName;
         $ready->started_at = Carbon::now();
         $ready->save();
 
@@ -61,14 +62,14 @@ class GeneratePDFJob implements ShouldQueue
             ->save($outputPath);
 
         $ready->completed_at = Carbon::now();
-        $ready->records      = $service->count();
+        $ready->records = $service->count();
         $ready->save();
 
         activity('ready')
             ->performedOn($ready)
             ->causedBy($this->set->label->user)
             ->event('generated')
-            ->log('PDF Ready with records ' . $service->count());
+            ->log('PDF Ready with records '.$service->count());
 
         Mail::to($this->set->label->user)
             ->queue(new PDFReadyMail($ready));

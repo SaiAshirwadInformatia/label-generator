@@ -8,14 +8,13 @@ use Livewire\Component;
 
 class UserForm extends Component
 {
-
     public User $user;
 
     protected array $rules = [
         'user.name' => 'required',
         'user.email' => 'required|email',
         'user.company' => 'nullable',
-        'user.level' => 'required'
+        'user.level' => 'required',
     ];
 
     public function render()
@@ -24,13 +23,13 @@ class UserForm extends Component
             'levels' => [
                 'user' => 'User',
                 'admin' => 'Admin',
-            ]
+            ],
         ]);
     }
 
     public function submitForm()
     {
-        if (!$this->user->password) {
+        if (! $this->user->password) {
             $this->user->password = Str::random();
         }
         $this->validate();
@@ -38,6 +37,7 @@ class UserForm extends Component
         $this->user->save();
 
         session()->flash('success', 'User details saved successfully');
+
         return redirect()->route('users.index');
     }
 }

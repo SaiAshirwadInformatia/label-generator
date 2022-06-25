@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Set|null $set
  * @property-read \App\Models\User|null $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Ready newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ready newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ready query()
@@ -40,7 +41,7 @@ class Ready extends Model
     protected $casts = [
         'started_at' => 'timestamp',
         'completed_at' => 'timestamp',
-        'records' => 'integer'
+        'records' => 'integer',
     ];
 
     public function user()

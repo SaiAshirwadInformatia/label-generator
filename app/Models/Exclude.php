@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude query()
@@ -25,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class Exclude extends Pivot
 {
-    protected $fillable = [ 'name' ];
+    protected $fillable = ['name'];
 
     public function user()
     {

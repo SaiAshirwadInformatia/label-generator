@@ -3,11 +3,9 @@
 namespace App\View\Components\Icon;
 
 use Illuminate\View\Component;
-use Log;
 
 abstract class BaseIcon extends Component
 {
-
     public $class;
 
     /**
@@ -15,7 +13,7 @@ abstract class BaseIcon extends Component
      *
      * @return void
      */
-    public function __construct($class = "")
+    public function __construct($class = '')
     {
         $this->class = $class;
         // add default classes if missed

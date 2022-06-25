@@ -2,12 +2,11 @@
 
 use App\Http\Controllers\ActivationController;
 use App\Http\Controllers\ActivityLogsController;
-use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\LabelController;
 use App\Http\Controllers\ReadyController;
 use App\Http\Controllers\UserController;
-use App\Http\Livewire\LabelConfigure;
 use Illuminate\Support\Facades\Route;
+use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'welcome');
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 Route::middleware('auth')->group(function () {
     Route::view('/dashboard', 'dashboard')->name('dashboard');
@@ -45,7 +44,5 @@ Route::get('/activate/{user:ott}', [ActivationController::class, 'index'])->name
 Route::post('/activate/{user:ott}', [ActivationController::class, 'store'])->name('activation.store');
 
 Route::get('/download/{token}', [ReadyController::class, 'download'])->name('download');
-
-
 
 Route::get('health', HealthCheckResultsController::class)->name('health.index');

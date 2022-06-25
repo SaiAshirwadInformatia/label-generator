@@ -29,15 +29,15 @@ class GenerateLabelFields implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  App\Events\LabelCreated $event
+     * @param  App\Events\LabelCreated  $event
      * @return void
      */
     public function handle(LabelCreated $event)
     {
-        $path    = Storage::disk('public')->path($event->label->path);
+        $path = Storage::disk('public')->path($event->label->path);
         $columns = [];
         if (Str::endsWith($path, '.csv')) {
-            $fp      = fopen($path, 'r');
+            $fp = fopen($path, 'r');
             $columns = fgetcsv($fp);
             fclose($fp);
         } else {
@@ -56,8 +56,8 @@ class GenerateLabelFields implements ShouldQueue
                 break;
             }
         }
-        $settings               = $event->label->settings ?? [];
-        $settings['columns']    = $columns;
+        $settings = $event->label->settings ?? [];
+        $settings['columns'] = $columns;
         $event->label->settings = $settings;
         $event->label->save();
 

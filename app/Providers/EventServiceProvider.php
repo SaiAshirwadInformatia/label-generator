@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Events\LabelCreated;
-use App\Listeners\GenerateDefaultSet;
 use App\Listeners\GenerateLabelFields;
 use App\Listeners\UserImpersonatedListener;
 use App\Listeners\UserLeftImpersonationListener;
@@ -31,11 +30,11 @@ class EventServiceProvider extends ServiceProvider
             GenerateLabelFields::class,
         ],
         TakeImpersonation::class => [
-            UserImpersonatedListener::class
+            UserImpersonatedListener::class,
         ],
         LeaveImpersonation::class => [
-            UserLeftImpersonationListener::class
-        ]
+            UserLeftImpersonationListener::class,
+        ],
     ];
 
     /**

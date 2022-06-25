@@ -28,6 +28,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $downloads_count
  * @property-read int|null $fields_count
  * @property-read int|null $sets_count
+ *
  * @method static \Database\Factories\LabelFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Label newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Label newQuery()
@@ -42,10 +43,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|Label whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Label whereUserId($value)
  * @mixin \Eloquent
+ *
  * @property int|null $template_id
  * @property-read Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read int|null $activities_count
  * @property-read \App\Models\Template|null $template
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Label whereTemplateId($value)
  */
 class Label extends Model
@@ -77,7 +80,7 @@ class Label extends Model
         return LogOptions::defaults()
             ->logFillable()
             ->logOnlyDirty()
-            ->useLogName("labels");
+            ->useLogName('labels');
     }
 
     /**

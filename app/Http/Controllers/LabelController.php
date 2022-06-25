@@ -10,13 +10,12 @@ use Spatie\Browsershot\Browsershot;
 
 class LabelController extends Controller
 {
-
     public const PREVIEW = 100;
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request    $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
@@ -39,6 +38,7 @@ class LabelController extends Controller
         if ($instance instanceof Browsershot) {
             return $instance->pdf();
         }
+
         return $instance->stream();
     }
 

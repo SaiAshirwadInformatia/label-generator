@@ -79,9 +79,9 @@ class Field extends Model
     public function headerCss(): Attribute
     {
         return Attribute::get(function () {
-            $css  = [];
-            $font = 'font-family: ' . $this->settings['font'];
-            $font .= '-' . $this->settings['type'];
+            $css = [];
+            $font = 'font-family: '.$this->settings['font'];
+            $font .= '-'.$this->settings['type'];
             $css[] = strtolower($font);
 
             // if (isset($this->settings['color'])) {
@@ -98,12 +98,12 @@ class Field extends Model
     public function css(): Attribute
     {
         return Attribute::get(function () {
-            $css  = [];
-            $font = 'font-family: ' . $this->settings['font'];
-            $font .= '-' . $this->settings['type'];
+            $css = [];
+            $font = 'font-family: '.$this->settings['font'];
+            $font .= '-'.$this->settings['type'];
             $css[] = strtolower($font);
             if (isset($this->settings['size'])) {
-                $css[] = 'font-size: ' . $this->settings['size'] . 'px';
+                $css[] = 'font-size: '.$this->settings['size'].'px';
             }
             $css[] = 'display: inline;height: 100%';
             // if (isset($this->settings['color'])) {

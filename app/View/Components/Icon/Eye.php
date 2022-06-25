@@ -2,11 +2,8 @@
 
 namespace App\View\Components\Icon;
 
-use Log;
-
 class Eye extends BaseIcon
 {
-
     /**
      * Get the view / contents that represent the component.
      *

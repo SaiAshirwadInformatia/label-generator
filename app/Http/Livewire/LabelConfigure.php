@@ -28,7 +28,7 @@ class LabelConfigure extends Component
 
     public function mount($label)
     {
-        $this->label       = $label;
+        $this->label = $label;
         $this->fontsConfig = config('sai.fonts');
     }
 
@@ -44,8 +44,8 @@ class LabelConfigure extends Component
 
     public function addNewSet()
     {
-        $set              = new Set();
-        $set->name        = 'Label Set ' . ($this->label->sets()->count() + 1);
+        $set = new Set();
+        $set->name = 'Label Set '.($this->label->sets()->count() + 1);
         $set->incremental = 1;
 
         $this->label->sets()->save($set);

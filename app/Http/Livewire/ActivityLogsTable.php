@@ -29,7 +29,7 @@ class ActivityLogsTable extends Component
          * @var User
          */
         $loggedUser = auth()->user();
-        if (!$loggedUser->isAdmin()) {
+        if (! $loggedUser->isAdmin()) {
             $query = Activity::causedBy($loggedUser);
         }
 
@@ -37,16 +37,17 @@ class ActivityLogsTable extends Component
         // $data = $query->first();
         // dd($data->subject->toArray(), $data->causer->toArray());
         return view('livewire.activity-logs-table', [
-            'activity_logs' => $query->paginate($this->limit)
+            'activity_logs' => $query->paginate($this->limit),
         ]);
     }
 
     public function subjectDisplay(Activity $log)
     {
-        $display = $log->subject_type . ' (' . $log->subject_id . ')';
+        $display = $log->subject_type.' ('.$log->subject_id.')';
         if (isset($log->subject?->name) && $log->subject_type != 'App\Models\Field') {
-            return '<span title="' . $display . '">' . $log->subject->name . '</span>';
+            return '<span title="'.$display.'">'.$log->subject->name.'</span>';
         }
+
         return $display;
     }
 }

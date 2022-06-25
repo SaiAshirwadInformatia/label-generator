@@ -19,7 +19,7 @@ class UserObserver
     {
         $user->ott = Str::random(255);
         $user->save();
-        
+
         Mail::to($user)
             ->queue(new WelcomeMail($user));
     }

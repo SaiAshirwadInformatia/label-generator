@@ -6,7 +6,6 @@ use Illuminate\View\Component;
 
 class Login extends BaseIcon
 {
-
     /**
      * Get the view / contents that represent the component.
      *

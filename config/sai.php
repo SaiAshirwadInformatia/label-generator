@@ -15,7 +15,7 @@ return [
         'Boolean' => 'Boolean',
         'dd/MM/YYYY' => 'dd/MM/YYYY',
         'INR' => 'INR',
-        'EmptyRow' => 'EmptyRow'
+        'EmptyRow' => 'EmptyRow',
     ],
     'fonts' => [
         'Roboto' => [
@@ -32,8 +32,8 @@ return [
                 'MediumItalic' => 'MediumItalic',
                 'Regular' => 'Regular',
                 'Thin' => 'Thin',
-                'ThinItalic' => 'ThinItalic'
-            ]
+                'ThinItalic' => 'ThinItalic',
+            ],
         ],
 
         'Aleo' => [
@@ -45,7 +45,7 @@ return [
                 'Light' => 'Light',
                 'LightItalic' => 'LightItalic',
                 'Regular' => 'Regular',
-            ]
-        ]
+            ],
+        ],
     ],
 ];

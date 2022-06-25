@@ -4,7 +4,6 @@ namespace App\View\Components\Icon;
 
 class Edit extends BaseIcon
 {
-
     /**
      * Get the view / contents that represent the component.
      *

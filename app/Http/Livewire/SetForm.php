@@ -10,7 +10,9 @@ use Livewire\Component;
 class SetForm extends Component
 {
     public Set $set;
+
     public array $columns;
+
     public string $previewLink;
 
     protected $rules = [
@@ -76,11 +78,11 @@ class SetForm extends Component
 
     public function addField()
     {
-        $field               = new Field();
-        $field->name         = 'Field ' . $this->set->fields->count() + 1;
+        $field = new Field();
+        $field->name = 'Field '.$this->set->fields->count() + 1;
         $field->display_name = $field->name;
-        $field->type         = 'Text';
-        $field->settings     = [
+        $field->type = 'Text';
+        $field->settings = [
             'font' => 'Roboto',
             'type' => 'Regular',
             'size' => '15',

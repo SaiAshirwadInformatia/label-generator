@@ -6,7 +6,15 @@ use Livewire\Component;
 
 class DashboardCounts extends Component
 {
-    public $labels, $sets, $fields, $downloads, $excludes;
+    public $labels;
+
+    public $sets;
+
+    public $fields;
+
+    public $downloads;
+
+    public $excludes;
 
     public function mount()
     {

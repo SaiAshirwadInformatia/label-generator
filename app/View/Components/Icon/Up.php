@@ -6,7 +6,6 @@ use Illuminate\View\Component;
 
 class Up extends BaseIcon
 {
-
     /**
      * Get the view / contents that represent the component.
      *

@@ -9,7 +9,6 @@ use Livewire\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
 
 /**
- *
  * @property TemporaryUploadedFile $path
  */
 class LabelCreate extends Component
@@ -20,12 +19,19 @@ class LabelCreate extends Component
      * @var mixed
      */
     public $name;
+
     /**
      * @var mixed
      */
     public $path;
 
-    public $size, $orientation, $numbers, $column_nos;
+    public $size;
+
+    public $orientation;
+
+    public $numbers;
+
+    public $column_nos;
 
     public $templateList;
 
@@ -41,7 +47,7 @@ class LabelCreate extends Component
         'orientation' => 'required',
         'numbers' => 'required',
         'column_nos' => 'required',
-        'template_id' => 'nullable|integer'
+        'template_id' => 'nullable|integer',
     ];
 
     public function mount()
@@ -61,14 +67,14 @@ class LabelCreate extends Component
     {
         $this->validate();
 
-        $label           = new Label();
-        $label->name     = $this->name;
-        $label->path     = $this->path->store('/uploads', 'public');
+        $label = new Label();
+        $label->name = $this->name;
+        $label->path = $this->path->store('/uploads', 'public');
         $label->settings = [
             'size' => $this->size,
             'orientation' => $this->orientation,
             'numbers' => $this->numbers,
-            'column_nos' => $this->column_nos
+            'column_nos' => $this->column_nos,
         ];
         auth()->user()->labels()->save($label);
 

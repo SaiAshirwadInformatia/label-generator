@@ -20,6 +20,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $activities_count
  * @property-read \App\Models\Label|null $label
  * @property-read \App\Models\User $user
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Template newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Template newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Template query()
@@ -39,7 +40,7 @@ class Template extends Model
     protected $fillable = ['name', 'options'];
 
     protected $casts = [
-        'options' => 'array'
+        'options' => 'array',
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -47,7 +48,7 @@ class Template extends Model
         return LogOptions::defaults()
             ->logFillable()
             ->logOnlyDirty()
-            ->useLogName("templates");
+            ->useLogName('templates');
     }
 
     public function user()

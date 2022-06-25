@@ -2,9 +2,6 @@
 
 namespace App\Listeners;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
-
 class UserImpersonatedListener
 {
     /**
@@ -25,10 +22,10 @@ class UserImpersonatedListener
      */
     public function handle($event)
     {
-        activity("users")
+        activity('users')
             ->performedOn($event->impersonated)
             ->causedBy($event->impersonator)
-            ->event("login")
-            ->log("take_impersonation");
+            ->event('login')
+            ->log('take_impersonation');
     }
 }

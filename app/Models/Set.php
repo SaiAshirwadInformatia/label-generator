@@ -51,7 +51,8 @@ class Set extends Model
     use HasFactory;
     use LogsActivity;
 
-    public const SINGLE  = 1;
+    public const SINGLE = 1;
+
     public const GROUPED = 2;
 
     /**

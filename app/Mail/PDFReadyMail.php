@@ -4,7 +4,6 @@ namespace App\Mail;
 
 use App\Models\Ready;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -32,6 +31,6 @@ class PDFReadyMail extends Mailable
     public function build()
     {
         return $this->markdown('emails.pdf_ready')
-            ->subject('Download your Labels PDF : ' . $this->ready->set->name);
+            ->subject('Download your Labels PDF : '.$this->ready->set->name);
     }
 }

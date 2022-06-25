@@ -13,7 +13,7 @@ class SaveTemplate extends Component
     public Template $template;
 
     public $rules = [
-        'template.name' => 'required'
+        'template.name' => 'required',
     ];
 
     public function mount()
@@ -24,6 +24,7 @@ class SaveTemplate extends Component
             $this->template = new Template();
         }
     }
+
     public function render()
     {
         return view('livewire.save-template');

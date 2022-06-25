@@ -15,7 +15,7 @@ class ReadyController extends Controller
         try {
             $id = decrypt($token);
         } catch (Exception $e) {
-            abort(400, "Invalid download token");
+            abort(400, 'Invalid download token');
         }
         $ready = Ready::findOrFail($id);
         $path = Storage::disk('local')->path($ready->path);
@@ -25,14 +25,13 @@ class ReadyController extends Controller
         $download->ip = request()->ip();
         $download->save();
 
-        $filename = $ready->set->name . '-' . Carbon::now()->format('d-m-Y-h:i') . '.pdf';
+        $filename = $ready->set->name.'-'.Carbon::now()->format('d-m-Y-h:i').'.pdf';
 
-        activity("downloads")
+        activity('downloads')
             ->performedOn($download)
             // ->causedBy(request()->ip())
-            ->event("downloaded")
-            ->log("Downloaded " . $filename);
-
+            ->event('downloaded')
+            ->log('Downloaded '.$filename);
 
         return response()->download($path, $filename);
     }
