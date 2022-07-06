@@ -68,13 +68,21 @@
                         @endif
                     @endforeach
                 </td>
-                @if($loop->index == 0 && $loop->last)
+                @if($set->label->settings['column_nos'] > 1 && $loop->index == 0 && $loop->last)
                 <td></td>
-                @if($set->label->settings['column_nos'] == 3)
-                <td></td>
+                @if($set->label->settings['column_nos'] >= 3)
+                    <td></td>
                 @endif
-                @elseif($loop->index == 1 && $loop->last && $set->label->settings['column_nos'] == 3)
+                @if($set->label->settings['column_nos'] == 4)
+                    <td></td>
+                @endif
+                @elseif($loop->index == 1 && $loop->last && $set->label->settings['column_nos'] > 2)
                 <td></td>
+                @if($set->label->settings['column_nos'] == 4)
+                    <td></td>
+                @endif
+                @elseif($loop->index == 2 && $loop->last && $set->label->settings['column_nos'] > 3)
+                    <td></td>
                 @endif
             @endforeach
         </tr>
