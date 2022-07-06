@@ -11,6 +11,8 @@ abstract class BaseIcon extends Component
     /**
      * Create a new component instance.
      *
+     * @param mixed $class
+     *
      * @return void
      */
     public function __construct($class = '')

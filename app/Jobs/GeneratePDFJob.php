@@ -46,7 +46,7 @@ class GeneratePDFJob implements ShouldQueue
 
         $directory = Carbon::now()->format('Y'.DIRECTORY_SEPARATOR.'m');
         $directory .= DIRECTORY_SEPARATOR.str($this->set->label->name)->camel()->ucfirst();
-        if (! Storage::disk('local')->exists($directory)) {
+        if (!Storage::disk('local')->exists($directory)) {
             Storage::disk('local')->makeDirectory($directory);
         }
         $fileName = $directory.DIRECTORY_SEPARATOR.str($this->set->name)->camel()->ucfirst();

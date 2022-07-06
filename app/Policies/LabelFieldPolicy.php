@@ -13,7 +13,8 @@ class LabelFieldPolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
+     * @param \App\Models\User $user
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user)
@@ -24,8 +25,9 @@ class LabelFieldPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LabelField  $labelField
+     * @param \App\Models\User $user
+     * @param \App\Models\LabelField $labelField
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, LabelField $labelField)
@@ -36,7 +38,8 @@ class LabelFieldPolicy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
+     * @param \App\Models\User $user
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
@@ -47,8 +50,9 @@ class LabelFieldPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LabelField  $labelField
+     * @param \App\Models\User $user
+     * @param \App\Models\LabelField $labelField
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, LabelField $labelField)
@@ -59,8 +63,9 @@ class LabelFieldPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LabelField  $labelField
+     * @param \App\Models\User $user
+     * @param \App\Models\LabelField $labelField
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, LabelField $labelField)
@@ -71,8 +76,9 @@ class LabelFieldPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LabelField  $labelField
+     * @param \App\Models\User $user
+     * @param \App\Models\LabelField $labelField
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, LabelField $labelField)
@@ -83,8 +89,9 @@ class LabelFieldPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\LabelField  $labelField
+     * @param \App\Models\User $user
+     * @param \App\Models\LabelField $labelField
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, LabelField $labelField)

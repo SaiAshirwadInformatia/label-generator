@@ -70,8 +70,10 @@
                 </td>
                 @if($loop->index == 0 && $loop->last)
                 <td></td>
+                @if($set->label->settings['column_nos'] == 3)
                 <td></td>
-                @elseif($loop->index == 1 && $loop->last)
+                @endif
+                @elseif($loop->index == 1 && $loop->last && $set->label->settings['column_nos'] == 3)
                 <td></td>
                 @endif
             @endforeach

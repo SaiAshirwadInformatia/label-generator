@@ -95,7 +95,7 @@ class PDFGeneratorService
 
         $tables = [];
 
-        if ($set->type != Set::GROUPED && ! isset($set->settings['differentPage'])) {
+        if ($set->type != Set::GROUPED && !isset($set->settings['differentPage'])) {
             $data = [];
 
             foreach ($records as $record) {
@@ -187,7 +187,7 @@ class PDFGeneratorService
                         continue;
                     }
 
-                    if ($hasSubCount && ! empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
+                    if ($hasSubCount && !empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
                         $quantity = $subCount;
                         for ($i = 0; $i < intval(ceil($subCount / $set->limit)); $i++) {
                             if ($quantity > $set->limit) {
@@ -207,7 +207,7 @@ class PDFGeneratorService
                     }
                 }
                 $this->recordCount += count($data);
-                if (! empty($stateName)) {
+                if (!empty($stateName)) {
                     $tables[$stateName] = $data;
                 } else {
                     $tables[$index++] = $data;
@@ -249,7 +249,7 @@ class PDFGeneratorService
                     $data[] = $row;
                 }
                 $this->recordCount += count($data);
-                if (! empty($stateName)) {
+                if (!empty($stateName)) {
                     $tables[$stateName] = $data;
                 } else {
                     $tables[$index++] = $data;

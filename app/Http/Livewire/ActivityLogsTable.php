@@ -29,13 +29,12 @@ class ActivityLogsTable extends Component
          * @var User
          */
         $loggedUser = auth()->user();
-        if (! $loggedUser->isAdmin()) {
+        if (!$loggedUser->isAdmin()) {
             $query = Activity::causedBy($loggedUser);
         }
 
         $query->latest();
-        // $data = $query->first();
-        // dd($data->subject->toArray(), $data->causer->toArray());
+
         return view('livewire.activity-logs-table', [
             'activity_logs' => $query->paginate($this->limit),
         ]);

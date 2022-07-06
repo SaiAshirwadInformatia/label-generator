@@ -41,12 +41,12 @@ class LabelCreate extends Component
      * @var array
      */
     protected $rules = [
-        'name' => 'required',
-        'path' => 'mimes:csv,xls,xlsx',
-        'size' => 'required',
+        'name'        => 'required',
+        'path'        => 'mimes:csv,xls,xlsx',
+        'size'        => 'required',
         'orientation' => 'required',
-        'numbers' => 'required',
-        'column_nos' => 'required',
+        'numbers'     => 'required',
+        'column_nos'  => 'required',
         'template_id' => 'nullable|integer',
     ];
 
@@ -71,10 +71,10 @@ class LabelCreate extends Component
         $label->name = $this->name;
         $label->path = $this->path->store('/uploads', 'public');
         $label->settings = [
-            'size' => $this->size,
+            'size'        => $this->size,
             'orientation' => $this->orientation,
-            'numbers' => $this->numbers,
-            'column_nos' => $this->column_nos,
+            'numbers'     => $this->numbers,
+            'column_nos'  => $this->column_nos,
         ];
         auth()->user()->labels()->save($label);
 

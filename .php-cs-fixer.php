@@ -15,7 +15,6 @@ $rules = [
     'binary_operator_spaces' => [
         'operators' => [
             '=>' => 'align_single_space_minimal',
-            '='  => 'align_single_space_minimal',
         ],
     ],
     'braces' => [
@@ -24,7 +23,7 @@ $rules = [
     ],
     'cast_spaces'                 => true,
     'combine_consecutive_issets'  => true,
-    'concat_space'                => ['spacing' => 'one'],
+    'concat_space'                => ['spacing' => 'none'],
     'function_typehint_space'     => true,
     'global_namespace_import'     => true,
     'single_line_comment_style'   => ['comment_types' => ['hash']],

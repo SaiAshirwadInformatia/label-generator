@@ -27,7 +27,6 @@ class HealthServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
             CacheCheck::new(),
             RedisCheck::new(),
-
         ]);
     }
 

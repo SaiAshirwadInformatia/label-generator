@@ -39,9 +39,9 @@ class Ready extends Model
     use HasFactory;
 
     protected $casts = [
-        'started_at' => 'timestamp',
+        'started_at'   => 'timestamp',
         'completed_at' => 'timestamp',
-        'records' => 'integer',
+        'records'      => 'integer',
     ];
 
     public function user()

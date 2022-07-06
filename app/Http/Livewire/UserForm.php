@@ -11,17 +11,17 @@ class UserForm extends Component
     public User $user;
 
     protected array $rules = [
-        'user.name' => 'required',
-        'user.email' => 'required|email',
+        'user.name'    => 'required',
+        'user.email'   => 'required|email',
         'user.company' => 'nullable',
-        'user.level' => 'required',
+        'user.level'   => 'required',
     ];
 
     public function render()
     {
         return view('livewire.user-form', [
             'levels' => [
-                'user' => 'User',
+                'user'  => 'User',
                 'admin' => 'Admin',
             ],
         ]);
@@ -29,7 +29,7 @@ class UserForm extends Component
 
     public function submitForm()
     {
-        if (! $this->user->password) {
+        if (!$this->user->password) {
             $this->user->password = Str::random();
         }
         $this->validate();

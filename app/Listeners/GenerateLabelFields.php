@@ -29,7 +29,8 @@ class GenerateLabelFields implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  App\Events\LabelCreated  $event
+     * @param App\Events\LabelCreated $event
+     *
      * @return void
      */
     public function handle(LabelCreated $event)

@@ -61,8 +61,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
-    use LogsActivity, Impersonate;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
+    use LogsActivity;
+    use Impersonate;
 
     /**
      * The attributes that are mass assignable.

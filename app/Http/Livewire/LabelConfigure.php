@@ -24,6 +24,7 @@ class LabelConfigure extends Component
         'label.settings.orientation' => 'required',
         'label.settings.numbers'     => 'required',
         'label.settings.column_nos'  => 'required',
+        'label.settings.columns'     => 'nullable',
     ];
 
     public function mount($label)

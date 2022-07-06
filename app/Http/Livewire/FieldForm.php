@@ -17,10 +17,10 @@ class FieldForm extends Component
     public bool $isLast;
 
     protected $rules = [
-        'field.name' => 'required',
-        'field.display_name' => 'required',
-        'field.type' => 'required',
-        'field.default' => 'nullable',
+        'field.name'          => 'required',
+        'field.display_name'  => 'required',
+        'field.type'          => 'required',
+        'field.default'       => 'nullable',
         'field.settings.font' => 'required',
         'field.settings.type' => 'required',
         'field.settings.size' => 'required',
@@ -30,10 +30,11 @@ class FieldForm extends Component
     {
         $propertyName = str_replace('field.', '', $propertyName);
         if (
-            $propertyName == 'name' && (empty(trim($this->field->display_name)) ||
-                str_starts_with($this->field->display_name, 'Field ') ||
-                (isset($this->columns[$this->field->name]) &&
-                    $this->field->display_name == $this->columns[$this->field->name])
+            $propertyName == 'name' && (
+                empty(trim($this->field->display_name))
+                || str_starts_with($this->field->display_name, 'Field ')
+                || (isset($this->columns[$this->field->name])
+                    && $this->field->display_name == $this->columns[$this->field->name])
             )
         ) {
             $this->field->display_name = $this->columns[$value];
@@ -51,6 +52,7 @@ class FieldForm extends Component
     public function render()
     {
         $columns = ['NotSelected' => 'No Column'];
+
         foreach ($this->field->set->label->settings['columns'] as $index => $column) {
             $columns[$index] = $column;
         }
@@ -58,7 +60,7 @@ class FieldForm extends Component
 
         return view('livewire.field-form', [
             'fontsConfig' => config('sai.fonts'),
-            'fieldTypes' => config('sai.fieldTypes'),
+            'fieldTypes'  => config('sai.fieldTypes'),
         ]);
     }
 
