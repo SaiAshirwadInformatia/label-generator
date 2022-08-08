@@ -83,6 +83,9 @@ class PDFGeneratorService
         $reader = null;
 
         if ($this->preview) {
+            if (count($records) < $this->previewLimit) {
+                $this->previewLimit = count($records);
+            }
             $records = collect($records)->random($this->previewLimit)->toArray();
         }
 
