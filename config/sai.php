@@ -16,6 +16,7 @@ return [
         'dd/MM/YYYY' => 'dd/MM/YYYY',
         'INR' => 'INR',
         'EmptyRow' => 'EmptyRow',
+        'Concatenated' => 'Concatenated'
     ],
     'fonts' => [
         'Roboto' => [

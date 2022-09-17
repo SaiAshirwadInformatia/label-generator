@@ -23,6 +23,12 @@
         margin-top: 2px;
         display: inline-block;
         width: {{ $set->header_width }}%;
+        vertical-align: top;
+    }
+
+    .table td p span {
+        display: inline-block;
+        vertical-align: top;
     }
 
     .table td {
@@ -30,6 +36,7 @@
         max-width: {{ floor(100 / intval($set->label->settings['column_nos'])) }}%;
         border: 1px solid #000000;
         border-right: 2px;
+        vertical-align: top;
     }
 
     .table td {

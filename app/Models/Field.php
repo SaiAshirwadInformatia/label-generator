@@ -105,7 +105,7 @@ class Field extends Model
             if (isset($this->settings['size'])) {
                 $css[] = 'font-size: '.$this->settings['size'].'px';
             }
-            $css[] = 'display: inline;height: 100%';
+            $css[] = 'display: inline-block;';
             // if (isset($this->settings['color'])) {
             //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];
             // }

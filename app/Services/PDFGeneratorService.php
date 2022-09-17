@@ -106,15 +106,15 @@ class PDFGeneratorService
                 $emptyRows = 0;
                 foreach ($set->fields as $field) {
                     $row[$field->name] = match ($field->type) {
-                        'Text'        => $record[$field->name] ?? '',
-                        'Static'      => $field->default,
+                        'Text' => $record[$field->name] ?? '',
+                        'Static' => $field->default,
                         'Incremented' => $incremental++,
-                        'Number'      => intval($record[$field->name]),
-                        'Float'       => floatval($record[$field->name]),
-                        'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
-                        'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                        'INR'         => 'Rs. '.$record[$field->name],
-                        default       => ''
+                        'Number' => intval($record[$field->name]),
+                        'Float' => floatval($record[$field->name]),
+                        'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
+                        'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                        'INR' => 'Rs. ' . $record[$field->name],
+                        default => ''
                     };
                     if ($field->type == 'EmptyRow') {
                         $emptyRows++;
@@ -146,35 +146,40 @@ class PDFGeneratorService
         }
         $records = null;
 
+
+
         if ($set->type == Set::GROUPED) {
             $index = 0;
             foreach ($tableRows as $stateName => $records) {
                 $records = $records->groupBy($set->columnName);
                 $data = [];
-                foreach ($records as $record) {
-                    $subCount = count($record);
-                    $record = $record->first();
+                foreach ($records as $sub_records) {
+                    $subCount = count($sub_records) * 4;
+                    $record = $sub_records->first();
                     $row = [];
                     $emptyRows = 0;
                     $hasSubCount = '';
                     $hasIncremented = '';
+
                     foreach ($set->fields as $field) {
                         if ($field->type == 'SubCount') {
                             $hasSubCount = $field->name;
                         } elseif ($field->type == 'Incremented') {
                             $hasIncremented = $field->name;
                         }
+
                         $row[$field->name] = match ($field->type) {
-                            'Text'        => $record[$field->name] ?? '',
-                            'Static'      => $field->default,
-                            'SubCount'    => $subCount,
+                            'Text' => $record[$field->name] ?? '',
+                            'Static' => $field->default,
+                            'SubCount' => $subCount,
+                            'Concatenated' => $sub_records->pluck($field->name)->join('<br>'),
                             'Incremented' => $incremental++,
-                            'Number'      => intval($record[$field->name]),
-                            'Float'       => floatval($record[$field->name]),
-                            'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
-                            'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR'         => 'Rs. '.$record[$field->name],
-                            default       => ''
+                            'Number' => intval($record[$field->name]),
+                            'Float' => floatval($record[$field->name]),
+                            'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
+                            'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                            'INR' => 'Rs. ' . $record[$field->name],
+                            default => ''
                         };
                         if ($field->type == 'EmptyRow') {
                             $emptyRows++;
@@ -225,15 +230,15 @@ class PDFGeneratorService
                     $emptyRows = 0;
                     foreach ($set->fields as $field) {
                         $row[$field->name] = match ($field->type) {
-                            'Text'        => $record[$field->name] ?? '',
-                            'Static'      => $field->default,
+                            'Text' => $record[$field->name] ?? '',
+                            'Static' => $field->default,
                             'Incremented' => $incremental++,
-                            'Number'      => intval($record[$field->name]),
-                            'Float'       => floatval($record[$field->name]),
-                            'Boolean'     => boolval($record[$field->name]) ? 'Yes' : 'No',
-                            'dd/MM/YYYY'  => Carbon::parse($record[$field->name])->format('d/m/Y'),
-                            'INR'         => 'Rs. '.$record[$field->name],
-                            default       => ''
+                            'Number' => intval($record[$field->name]),
+                            'Float' => floatval($record[$field->name]),
+                            'Boolean' => boolval($record[$field->name]) ? 'Yes' : 'No',
+                            'dd/MM/YYYY' => Carbon::parse($record[$field->name])->format('d/m/Y'),
+                            'INR' => 'Rs. ' . $record[$field->name],
+                            default => ''
                         };
 
                         if ($field->type == 'EmptyRow') {
