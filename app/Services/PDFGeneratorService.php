@@ -154,7 +154,7 @@ class PDFGeneratorService
                 $records = $records->groupBy($set->columnName);
                 $data = [];
                 foreach ($records as $sub_records) {
-                    $subCount = count($sub_records) * 4;
+                    $subCount = count($sub_records);
                     $record = $sub_records->first();
                     $row = [];
                     $emptyRows = 0;
@@ -197,20 +197,29 @@ class PDFGeneratorService
 
                     if ($hasSubCount && !empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
                         $quantity = $subCount;
-                        for ($i = 0; $i < intval(ceil($subCount / $set->limit)); $i++) {
-                            if ($quantity > $set->limit) {
-                                $row[$hasSubCount] = $set->limit;
+                        $limit = $set->limit;
+
+                        if ($subCount > 35) {
+                             $limit = 30;
+                        }
+
+                        for ($i = 0; $i < intval(ceil($subCount / $limit)); $i++) {
+                            if ($quantity > $limit) {
+                                $row[$hasSubCount] = ''; // $limit;
                             } else {
-                                $row[$hasSubCount] = $quantity;
+                                $row[$hasSubCount] = ''; // $quantity;
                             }
-                            $quantity = $quantity - $set->limit;
+                            $quantity = $quantity - $limit;
                             $data[] = $row;
-                            if ($hasIncremented && $i != floor($subCount / $set->limit)) {
+                            if ($hasIncremented && $i != floor($subCount / $limit)) {
                                 $row[$hasIncremented] = $incremental;
                                 $incremental++;
                             }
                         }
                     } else {
+                        if ($hasSubCount) {
+                             $row[$hasSubCount] = '';
+                        }
                         $data[] = $row;
                     }
                 }
@@ -280,8 +289,8 @@ class PDFGeneratorService
         }
 
         if (app()->environment('local')) {
-            return Pdf::loadView('pdf.table', compact('set', 'tables'))
-                ->setPaper($label->settings['size'], $label->settings['orientation']);
+//            return Pdf::loadView('pdf.table', compact('set', 'tables'))
+//                ->setPaper($label->settings['size'], $label->settings['orientation']);
         }
 
         return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))

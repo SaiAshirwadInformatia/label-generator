@@ -1,6 +1,6 @@
 <style>
     @page { margin: 8px; }
-    body { margin: 0px; }
+    body { margin: 0px; font-family: Roboto; }
     .table {
         margin: 8px auto 60px auto;
         width: 99%;
@@ -28,6 +28,7 @@
 
     .table td p span {
         display: inline-block;
+        width: {{ 100 - $set->header_width - 2 }}%;
         vertical-align: top;
     }
 

@@ -32,8 +32,11 @@ class SetForm extends Component
         'hidePreview' => 'hide',
     ];
 
-    public function updated()
+    public function updated($name, $value)
     {
+        if ($name == 'set.limit' && empty($value)) {
+            $this->set->limit = null;
+        }
         $this->set->save();
     }
 
