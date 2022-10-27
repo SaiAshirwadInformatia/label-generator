@@ -34,6 +34,10 @@
                 <x-select wire:model="set.columnName" :options="$columns" />
             </div>
         @endif
+        <div class="flex-auto">
+            <x-label class="font-bold">Add Fragile Banner</x-label>
+            <x-select wire:model="set.settings.fragile" :options="['No', 'Yes']"></x-select>
+        </div>
     </div>
     <div class="mt-3 flex flex-wrap space-x-2">
 

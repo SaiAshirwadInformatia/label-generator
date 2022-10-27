@@ -11,7 +11,7 @@
     .table td p {
         border-bottom: 1px solid #000000;
         margin: 0;
-        padding: 1px 0 3px;
+        padding: 5px 0 5px 0;
     }
 
     .table td p:last-child {
@@ -62,6 +62,9 @@
         <tr>
             @foreach ($records as $index => $record)
                 <td>
+                    @if($set->settings['fragile'] ?? false)
+                    <p style="padding: 15px 0;font-size: 1.8rem;text-align: center">FRAGILE ITEMS | HANDLE WITH CARE</p>
+                    @endif
                     @foreach ($set->fields()->orderBy('sequence')->get() as $field)
                         @if($field->type == 'EmptyRow')
                         <p>
@@ -75,6 +78,9 @@
                         </p>
                         @endif
                     @endforeach
+                    @if($set->settings['fragile'] ?? false)
+                        <p style="padding: 15px 0;font-size: 1.8rem;text-align: center">FRAGILE ITEMS | HANDLE WITH CARE</p>
+                    @endif
                 </td>
                 @if($set->label->settings['column_nos'] > 1 && $loop->index == 0 && $loop->last)
                 <td></td>
@@ -85,7 +91,7 @@
                     <td></td>
                 @endif
                 @elseif($loop->index == 1 && $loop->last && $set->label->settings['column_nos'] > 2)
-                <td></td>
+                 <td></td>
                 @if($set->label->settings['column_nos'] == 4)
                     <td></td>
                 @endif

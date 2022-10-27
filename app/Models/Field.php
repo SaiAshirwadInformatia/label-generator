@@ -106,9 +106,9 @@ class Field extends Model
                 $css[] = 'font-size: '.$this->settings['size'].'px';
             }
             $css[] = 'display: inline-block';
-            if ($this->display_name == 'Quantity' || $this->display_name == 'Box No') {
-                $css[] = 'padding-top: 12px;padding-bottom: 12px';
-            }
+//            if ($this->display_name == 'Quantity' || $this->display_name == 'Box No') {
+//                $css[] = 'padding-top: 12px;padding-bottom: 12px';
+//            }
             // if (isset($this->settings['color'])) {
             //     $css[] = 'color:' . (str_starts_with($this->settings['color'], '#') ? '' : '#') . $this->settings['color'];
             // }

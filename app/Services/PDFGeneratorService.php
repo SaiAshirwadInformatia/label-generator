@@ -156,6 +156,7 @@ class PDFGeneratorService
                 foreach ($records as $sub_records) {
                     $subCount = count($sub_records);
                     $record = $sub_records->first();
+
                     $row = [];
                     $emptyRows = 0;
                     $hasSubCount = '';
@@ -181,10 +182,12 @@ class PDFGeneratorService
                             'INR' => 'Rs. ' . $record[$field->name],
                             default => ''
                         };
+
                         if ($field->type == 'EmptyRow') {
                             $emptyRows++;
                         }
                     }
+
                     $emptyCount = 1;
                     foreach ($row as $v) {
                         if (empty(trim($v))) {
@@ -205,9 +208,9 @@ class PDFGeneratorService
 
                         for ($i = 0; $i < intval(ceil($subCount / $limit)); $i++) {
                             if ($quantity > $limit) {
-                                $row[$hasSubCount] = ''; // $limit;
+                                $row[$hasSubCount] = $limit;
                             } else {
-                                $row[$hasSubCount] = ''; // $quantity;
+                                $row[$hasSubCount] = $quantity;
                             }
                             $quantity = $quantity - $limit;
                             $data[] = $row;
@@ -217,9 +220,6 @@ class PDFGeneratorService
                             }
                         }
                     } else {
-                        if ($hasSubCount) {
-                             $row[$hasSubCount] = '';
-                        }
                         $data[] = $row;
                     }
                 }

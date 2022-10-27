@@ -25,6 +25,7 @@ class SetForm extends Component
         'set.header_font'            => 'nullable|numeric',
         'set.settings.columns'       => 'nullable',
         'set.settings.differentPage' => 'nullable',
+        'set.settings.fragile'       => 'nullable|boolean'
     ];
 
     protected $listeners = [
