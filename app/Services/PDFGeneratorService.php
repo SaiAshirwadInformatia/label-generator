@@ -288,10 +288,10 @@ class PDFGeneratorService
             return view('pdf.table', compact('set', 'tables'));
         }
 
-        if (app()->environment('local')) {
-//            return Pdf::loadView('pdf.table', compact('set', 'tables'))
-//                ->setPaper($label->settings['size'], $label->settings['orientation']);
-        }
+//        if (app()->environment('local')) {
+            return Pdf::loadView('pdf.table', compact('set', 'tables'))
+                ->setPaper($label->settings['size'], $label->settings['orientation']);
+//        }
 
         return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
             ->setPaper($label->settings['size'], $label->settings['orientation']);
