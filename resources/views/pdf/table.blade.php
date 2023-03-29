@@ -2,7 +2,7 @@
     @page { margin: 8px; }
     body { margin: 0px; font-family: Roboto; }
     .table {
-        margin: 8px auto 60px auto;
+        margin: 8px auto 10px auto;
         width: 99%;
         max-width: 99%;
         border-collapse: collapse;
@@ -83,7 +83,7 @@
                     @endif
                 </td>
                 @if($set->label->settings['column_nos'] > 1 && $loop->index == 0 && $loop->last)
-                <td></td>
+                    <td></td>
                 @if($set->label->settings['column_nos'] >= 3)
                     <td></td>
                 @endif
@@ -91,7 +91,7 @@
                     <td></td>
                 @endif
                 @elseif($loop->index == 1 && $loop->last && $set->label->settings['column_nos'] > 2)
-                 <td></td>
+                    <td></td>
                 @if($set->label->settings['column_nos'] == 4)
                     <td></td>
                 @endif
@@ -105,6 +105,6 @@
 </div>
 @if(!$loop->last)
 {{--<div class="page-break"></div>--}}
-<div style="margin-bottom: 60px"></div>
+<div style="margin-bottom: 10px"></div>
 @endif
 @endforeach

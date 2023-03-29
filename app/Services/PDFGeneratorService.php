@@ -18,7 +18,7 @@ class PDFGeneratorService
 
     private bool $preview = false;
 
-    private int $previewLimit = 50;
+    private int $previewLimit = 2000;
 
     private bool $html = false;
 
@@ -148,14 +148,28 @@ class PDFGeneratorService
 
 
 
-        if ($set->type == Set::GROUPED) {
+        if ($set->type === Set::GROUPED) {
             $index = 0;
+            $filter = false;
+            $filterGrouped = [];
+
+            if (isset($set->settings['filter']) && !empty(trim($set->settings['filter']))) {
+                $filterGrouped = explode(',', trim($set->settings['filter']));
+                if (count($filterGrouped) > 0) {
+                    $filter = true;
+                }
+            }
+
             foreach ($tableRows as $stateName => $records) {
                 $records = $records->groupBy($set->columnName);
                 $data = [];
                 foreach ($records as $sub_records) {
                     $subCount = count($sub_records);
                     $record = $sub_records->first();
+
+                    if ($filter && !in_array($record[$set->columnName], $filterGrouped, false)) {
+                        continue;
+                    }
 
                     $row = [];
                     $emptyRows = 0;
@@ -201,10 +215,6 @@ class PDFGeneratorService
                     if ($hasSubCount && !empty($set->limit) && $set->limit > 0 && $row[$hasSubCount] > $set->limit) {
                         $quantity = $subCount;
                         $limit = $set->limit;
-
-                        if ($subCount > 35) {
-                             $limit = 30;
-                        }
 
                         for ($i = 0; $i < intval(ceil($subCount / $limit)); $i++) {
                             if ($quantity > $limit) {
@@ -293,8 +303,8 @@ class PDFGeneratorService
                 ->setPaper($label->settings['size'], $label->settings['orientation']);
 //        }
 
-        return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
-            ->setPaper($label->settings['size'], $label->settings['orientation']);
+//        return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
+//            ->setPaper($label->settings['size'], $label->settings['orientation']);
 
 //
 //
