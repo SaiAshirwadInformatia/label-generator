@@ -2,7 +2,7 @@
     @page { margin: 8px; }
     body { margin: 0px; font-family: Roboto; }
     .table {
-        margin: 8px auto 60px auto;
+        margin: 8px auto 40px auto;
         width: 99%;
         max-width: 99%;
         border-collapse: collapse;
@@ -105,6 +105,6 @@
 </div>
 @if(!$loop->last)
 {{--<div class="page-break"></div>--}}
-<div style="margin-bottom: 60px"></div>
+<div style="margin-bottom: 0px"></div>
 @endif
 @endforeach
