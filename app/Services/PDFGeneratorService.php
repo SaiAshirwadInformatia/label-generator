@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Field;
 use App\Models\Set;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
@@ -147,7 +148,6 @@ class PDFGeneratorService
         $records = null;
 
 
-
         if ($set->type == Set::GROUPED) {
             $index = 0;
             foreach ($tableRows as $stateName => $records) {
@@ -202,8 +202,10 @@ class PDFGeneratorService
                         $quantity = $subCount;
                         $limit = $set->limit;
 
-                        if ($subCount > 35) {
-                             $limit = 30;
+                        $concatenated = [];
+                        if ($set->fields->contains(fn(Field $field) => $field->type == 'Concatenated')) {
+                            $field_name = $set->fields->firstWhere('type', 'Concatenated')->name;
+                            $concatenated = $sub_records->pluck($field_name)->toArray();
                         }
 
                         for ($i = 0; $i < intval(ceil($subCount / $limit)); $i++) {
@@ -211,6 +213,9 @@ class PDFGeneratorService
                                 $row[$hasSubCount] = $limit;
                             } else {
                                 $row[$hasSubCount] = $quantity;
+                            }
+                            if (!empty($concatenated)) {
+                                $row['Concatenated'] = implode(', ', array_splice($concatenated, 0, $row[$hasSubCount]));
                             }
                             $quantity = $quantity - $limit;
                             $data[] = $row;
@@ -289,8 +294,8 @@ class PDFGeneratorService
         }
 
 //        if (app()->environment('local')) {
-            return Pdf::loadView('pdf.table', compact('set', 'tables'))
-                ->setPaper($label->settings['size'], $label->settings['orientation']);
+        return Pdf::loadView('pdf.table', compact('set', 'tables'))
+            ->setPaper($label->settings['size'], $label->settings['orientation']);
 //        }
 
         return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
