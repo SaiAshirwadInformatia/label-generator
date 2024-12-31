@@ -121,15 +121,15 @@ class PDFGeneratorService
                     }
                 }
 
-                $emptyCount = 1;
-                foreach ($row as $v) {
-                    if (empty(trim($v))) {
-                        $emptyCount++;
-                    }
-                }
-                if ($emptyCount >= $emptyRows + 3) {
-                    continue;
-                }
+//                $emptyCount = 1;
+//                foreach ($row as $v) {
+//                    if (empty(trim($v))) {
+//                        $emptyCount++;
+//                    }
+//                }
+//                if ($emptyCount >= $emptyRows + 3) {
+//                    continue;
+//                }
 
                 $data[] = $row;
             }
@@ -173,7 +173,7 @@ class PDFGeneratorService
                             'Text' => $record[$field->name] ?? '',
                             'Static' => $field->default,
                             'SubCount' => $subCount,
-                            'Concatenated' => $sub_records->pluck($field->name)->join('<br>'),
+                            'Concatenated' => $sub_records->pluck($field->name)->join(', '),
                             'Incremented' => $incremental++,
                             'Number' => intval($record[$field->name]),
                             'Float' => floatval($record[$field->name]),

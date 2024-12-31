@@ -1,8 +1,8 @@
 <style>
-    @page { margin: 8px; }
+    @page { margin: 24px; }
     body { margin: 0px; font-family: Roboto; }
     .table {
-        margin: 8px auto 40px auto;
+        margin: 20px auto 40px auto;
         width: 99%;
         max-width: 99%;
         border-collapse: collapse;
