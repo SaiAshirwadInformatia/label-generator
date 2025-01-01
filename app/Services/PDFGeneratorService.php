@@ -218,6 +218,7 @@ class PDFGeneratorService
                         $limit = $set->limit;
 
                         $concatenated = [];
+                        $field_name = null;
                         if ($set->fields->contains(fn(Field $field) => $field->type == 'Concatenated')) {
                             $field_name = $set->fields->firstWhere('type', 'Concatenated')->name;
                             $concatenated = $sub_records->pluck($field_name)->toArray();
@@ -229,8 +230,8 @@ class PDFGeneratorService
                             } else {
                                 $row[$hasSubCount] = $quantity;
                             }
-                            if (!empty($concatenated)) {
-                                $row['Concatenated'] = implode(', ', array_splice($concatenated, 0, $row[$hasSubCount]));
+                            if (!empty($concatenated) && $field_name) {
+                                $row[$field_name] = implode(', ', array_splice($concatenated, 0, $row[$hasSubCount]));
                             }
                             $quantity = $quantity - $limit;
                             $data[] = $row;
