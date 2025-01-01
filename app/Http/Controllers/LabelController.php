@@ -10,8 +10,6 @@ use Spatie\Browsershot\Browsershot;
 
 class LabelController extends Controller
 {
-    public const PREVIEW = 100;
-
     /**
      * Store a newly created resource in storage.
      *
@@ -33,7 +31,7 @@ class LabelController extends Controller
     {
         $instance = app()->make(PDFGeneratorService::class)
             ->preview()
-            ->limit(self::PREVIEW)
+            ->limit(request()->query('limit', 100))
             ->process($set);
 
         if ($instance instanceof Browsershot) {
