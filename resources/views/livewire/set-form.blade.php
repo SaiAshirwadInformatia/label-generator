@@ -33,6 +33,10 @@
                 <x-label class="font-bold">Group Column Name</x-label>
                 <x-select wire:model="set.columnName" :options="$columns" />
             </div>
+            <div class="flex-auto">
+                <x-label class="font-bold">Filter by Grouped</x-label>
+                <x-input wire:model="set.settings.filter" type="text" class="w-10/12" />
+            </div>
         @endif
         <div class="flex-auto">
             <x-label class="font-bold">Add Fragile Banner</x-label>

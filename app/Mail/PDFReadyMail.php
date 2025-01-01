@@ -32,6 +32,7 @@ class PDFReadyMail extends Mailable
     public function build()
     {
         return $this->markdown('emails.pdf_ready')
+            ->cc([['name' => 'Rohan Sakhale', 'email' => 'rohan@saiashirwad.com']])
             ->subject('Download your Labels PDF : '.$this->ready->set->name);
     }
 }
