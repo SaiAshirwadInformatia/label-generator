@@ -87,7 +87,7 @@ class PDFGeneratorService
             if (count($records) < $this->previewLimit) {
                 $this->previewLimit = count($records);
             }
-            $records = collect($records)->random($this->previewLimit)->toArray();
+            $records = collect($records)->take($this->previewLimit)->toArray();
         }
 
         return $records;
@@ -230,7 +230,7 @@ class PDFGeneratorService
                             } else {
                                 $row[$hasSubCount] = $quantity;
                             }
-                            if (!empty($concatenated) && $field_name) {
+                            if (!empty($concatenated) && $field_name != null) {
                                 $row[$field_name] = implode(', ', array_splice($concatenated, 0, $row[$hasSubCount]));
                             }
                             $quantity = $quantity - $limit;
