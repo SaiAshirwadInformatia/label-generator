@@ -50,7 +50,9 @@ class Field extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'display_name', 'type', 'default', 'settings', 'sequence'];
+    protected $fillable = [
+        'name', 'display_name', 'type', 'default', 'settings', 'sequence'
+    ];
 
     /**
      * @var array

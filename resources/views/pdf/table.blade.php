@@ -1,5 +1,5 @@
 <style>
-    @page { margin: 8px; }
+    @page { margin: 24px; }
     body { margin: 0px; font-family: Roboto; }
     .table {
         margin: 8px auto 10px auto;

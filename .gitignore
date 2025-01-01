@@ -17,3 +17,4 @@ yarn-error.log
 _ide_helper.php
 notes
 .php-cs-fixer.cache
+.DS_Store

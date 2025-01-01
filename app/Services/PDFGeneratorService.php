@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Field;
 use App\Models\Set;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\Snappy\Facades\SnappyPdf;
@@ -121,15 +122,15 @@ class PDFGeneratorService
                     }
                 }
 
-                $emptyCount = 1;
-                foreach ($row as $v) {
-                    if (empty(trim($v))) {
-                        $emptyCount++;
-                    }
-                }
-                if ($emptyCount >= $emptyRows + 3) {
-                    continue;
-                }
+//                $emptyCount = 1;
+//                foreach ($row as $v) {
+//                    if (empty(trim($v))) {
+//                        $emptyCount++;
+//                    }
+//                }
+//                if ($emptyCount >= $emptyRows + 3) {
+//                    continue;
+//                }
 
                 $data[] = $row;
             }
@@ -187,7 +188,7 @@ class PDFGeneratorService
                             'Text' => $record[$field->name] ?? '',
                             'Static' => $field->default,
                             'SubCount' => $subCount,
-                            'Concatenated' => $sub_records->pluck($field->name)->join('<br>'),
+                            'Concatenated' => $sub_records->pluck($field->name)->join(', '),
                             'Incremented' => $incremental++,
                             'Number' => intval($record[$field->name]),
                             'Float' => floatval($record[$field->name]),
@@ -216,11 +217,20 @@ class PDFGeneratorService
                         $quantity = $subCount;
                         $limit = $set->limit;
 
+                        $concatenated = [];
+                        if ($set->fields->contains(fn(Field $field) => $field->type == 'Concatenated')) {
+                            $field_name = $set->fields->firstWhere('type', 'Concatenated')->name;
+                            $concatenated = $sub_records->pluck($field_name)->toArray();
+                        }
+
                         for ($i = 0; $i < intval(ceil($subCount / $limit)); $i++) {
                             if ($quantity > $limit) {
                                 $row[$hasSubCount] = $limit;
                             } else {
                                 $row[$hasSubCount] = $quantity;
+                            }
+                            if (!empty($concatenated)) {
+                                $row['Concatenated'] = implode(', ', array_splice($concatenated, 0, $row[$hasSubCount]));
                             }
                             $quantity = $quantity - $limit;
                             $data[] = $row;
@@ -299,8 +309,8 @@ class PDFGeneratorService
         }
 
 //        if (app()->environment('local')) {
-            return Pdf::loadView('pdf.table', compact('set', 'tables'))
-                ->setPaper($label->settings['size'], $label->settings['orientation']);
+        return Pdf::loadView('pdf.table', compact('set', 'tables'))
+            ->setPaper($label->settings['size'], $label->settings['orientation']);
 //        }
 
 //        return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
