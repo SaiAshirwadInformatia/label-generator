@@ -31,7 +31,8 @@ class LabelController extends Controller
     {
         $instance = app()->make(PDFGeneratorService::class)
             ->preview()
-            ->limit(request()->query('limit', 100))
+            // ->html()
+            ->limit(request()->query('limit', 500))
             ->process($set);
 
         if ($instance instanceof Browsershot) {

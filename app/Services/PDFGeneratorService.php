@@ -140,7 +140,7 @@ class PDFGeneratorService
             return $tables;
         }
 
-        if (isset($set->settings['differentPage'])) {
+        if (isset($set->settings['differentPage']) && !blank($set->settings['differentPage'])) {
             $tableRows = collect($records)->groupBy($set->settings['differentPage']);
         } else {
             $tableRows = ['General' => collect($records)];

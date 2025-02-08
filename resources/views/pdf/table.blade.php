@@ -1,8 +1,8 @@
 <style>
-    @page { margin: 24px; }
+    @page { margin: 5px; }
     body { margin: 0px; font-family: Roboto; }
     .table {
-        margin: 8px auto 10px auto;
+        margin: 0px auto 0px auto;
         width: 99%;
         max-width: 99%;
         border-collapse: collapse;
@@ -17,6 +17,13 @@
     .table td p:last-child {
         border-bottom: none;
     }
+
+    .table td p, .table td p span {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal; /* Avoids text spilling out */
+    }
+
 
     .table td p strong {
         margin-left: 3px;
@@ -33,8 +40,8 @@
     }
 
     .table td {
-        width: {{ floor(100 / intval($set->label->settings['column_nos'])) }}%;
-        max-width: {{ floor(100 / intval($set->label->settings['column_nos'])) }}%;
+        width: {{ floor(100 / intval($set->label->settings['column_nos'])) - 5 }}%;
+        max-width: {{ floor(100 / intval($set->label->settings['column_nos'])) - 5 }}%;
         border: 1px solid #000000;
         border-right: 2px;
         vertical-align: top;
@@ -83,17 +90,17 @@
                     @endif
                 </td>
                 @if($set->label->settings['column_nos'] > 1 && $loop->index == 0 && $loop->last)
-                    <td></td>
+                    <td style="visibility: hidden;"></td>
                 @if($set->label->settings['column_nos'] >= 3)
-                    <td></td>
+                    <td style="visibility: hidden;"></td>
                 @endif
                 @if($set->label->settings['column_nos'] == 4)
-                    <td></td>
+                    <td style="visibility: hidden;"></td>
                 @endif
                 @elseif($loop->index == 1 && $loop->last && $set->label->settings['column_nos'] > 2)
-                    <td></td>
+                    <td style="visibility: hidden;"></td>
                 @if($set->label->settings['column_nos'] == 4)
-                    <td></td>
+                    <td style="visibility: hidden;"></td>
                 @endif
                 @elseif($loop->index == 2 && $loop->last && $set->label->settings['column_nos'] > 3)
                     <td></td>
