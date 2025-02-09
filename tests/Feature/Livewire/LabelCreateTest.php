@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Livewire;
 
-use App\Http\Livewire\LabelCreate;
+use App\Livewire\LabelCreate;
 use Livewire\Livewire;
 
 test('the_component_can_render', function () {

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Livewire;
 
-use App\Http\Livewire\LabelTable;
+use App\Livewire\LabelTable;
 use Livewire\Livewire;
 use Tests\TestCase;
 

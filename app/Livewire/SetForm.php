@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Jobs\GeneratePDFJob;
 use App\Models\Field;
@@ -56,7 +56,7 @@ class SetForm extends Component
     public function generatePDF()
     {
         GeneratePDFJob::dispatch($this->set);
-        $this->emit('showSuccess', 'PDF generation added to queue, you should receive email shortly!');
+        $this->dispatch('showSuccess', 'PDF generation added to queue, you should receive email shortly!');
     }
 
     public function hide()
@@ -67,18 +67,18 @@ class SetForm extends Component
     public function previewPDF()
     {
         // $this->previewLink = route('labels.preview', ['set' => $this->set->id]);
-        $this->emit('openLink', route('labels.preview', ['set' => $this->set->id]));
+        $this->dispatch('openLink', route('labels.preview', ['set' => $this->set->id]));
     }
 
     public function openWebPage()
     {
-        $this->emit('openLink', route('labels.generate', ['set' => $this->set->id]));
+        $this->dispatch('openLink', route('labels.generate', ['set' => $this->set->id]));
     }
 
     public function destroy()
     {
         $this->set->delete();
-        $this->emit('setDeleted');
+        $this->dispatch('setDeleted');
     }
 
     public function addField()
