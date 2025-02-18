@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Label;
 use App\Models\Template;
@@ -42,6 +42,6 @@ class SaveTemplate extends Component
         $this->label->template_id = $this->template->id;
         $this->label->save();
 
-        $this->emit('showSuccess', 'Templated saved!');
+        $this->dispatch('showSuccess', 'Templated saved!');
     }
 }

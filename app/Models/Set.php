@@ -73,6 +73,11 @@ class Set extends Model
         'header_font'   => 'integer',
     ];
 
+    protected $attributes = [
+        'header_width' => 15,
+        'header_font'  => 11,
+    ];
+
     protected $with = ['fields'];
 
     public function getActivitylogOptions(): LogOptions

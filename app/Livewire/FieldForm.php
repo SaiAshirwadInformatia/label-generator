@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire;
+namespace App\Livewire;
 
 use App\Models\Field;
 use App\Models\Set;
@@ -67,7 +67,7 @@ class FieldForm extends Component
     public function destroy()
     {
         $this->field->delete();
-        $this->emit('refreshSet');
+        $this->dispatch('refreshSet');
     }
 
     public function moveUp()
@@ -85,7 +85,7 @@ class FieldForm extends Component
 
         $this->field->sequence = $sequence;
         $this->field->save();
-        $this->emit('refreshSet');
+        $this->dispatch('refreshSet');
     }
 
     public function moveDown()
@@ -103,6 +103,6 @@ class FieldForm extends Component
 
         $this->field->sequence = $sequence;
         $this->field->save();
-        $this->emit('refreshSet');
+        $this->dispatch('refreshSet');
     }
 }

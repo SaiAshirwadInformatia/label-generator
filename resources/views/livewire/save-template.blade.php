@@ -1,6 +1,6 @@
 <div class="flex">
 
-    <x-input wire:model.defer="template.name" class="h-10 border p-1 mr-1" required
+    <x-input wire:model="template.name" class="h-10 border p-1 mr-1" required
         placeholder="Template Name" />
     <x-button wire:click="submit">
         <svg wire:loading class="animate-spin mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
