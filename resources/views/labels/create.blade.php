@@ -4,5 +4,5 @@
             {{ __('Generate a New Labels PDF') }}
         </h2>
     </x-slot>
-    <livewire:label-create />
+    <livewire:label-create/>
 </x-app-layout>

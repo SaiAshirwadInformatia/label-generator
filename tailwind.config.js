@@ -1,28 +1,20 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+import defaultTheme from 'tailwindcss/defaultTheme';
 
-module.exports = {
-    purge: [
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
+        './resources/**/*.blade.php',
+        './resources/**/*.js',
+        './resources/**/*.vue',
     ],
-
     theme: {
         extend: {
-            fontSize: {
-                'xs': '0.7rem'
-            },
             fontFamily: {
-                sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
         },
     },
-
-    variants: {
-        extend: {
-
-        },
-    },
-
-    plugins: [require('@tailwindcss/forms')],
+    plugins: [],
 };
