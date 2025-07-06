@@ -52,6 +52,11 @@
             <x-label>Static Value</x-label>
             <x-input wire:model.live.debounce.500ms="field.default" type="text" class="w-10/12" />
         </div>
+    @elseif($field['type'] == 'Concatenated')
+        <div class="w-2/12">
+            <x-label>Concatenated Value</x-label>
+            <x-input wire:model.live.debounce.500ms="field.default" type="text" class="w-10/12" />
+        </div>
     @else
         <div class="w-2/12"></div>
     @endif

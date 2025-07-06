@@ -80,7 +80,9 @@
                         </p>
                         @else
                         <p>
+                            @unless($set->settings['hideLabels'] ?? false)
                             <strong style="{{ $field->headerCss }};font-size: {{ $set->header_font }}px">{{ $field->display_name }}</strong>
+                            @endunless
                             <span style="{{ $field->css }}">{!! $record[$field->name] !!}</span>
                         </p>
                         @endif

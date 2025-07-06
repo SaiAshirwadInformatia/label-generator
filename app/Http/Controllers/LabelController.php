@@ -6,6 +6,7 @@ use App\Models\Label;
 use App\Models\Set;
 use App\Services\PDFGeneratorService;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Spatie\Browsershot\Browsershot;
 
 class LabelController extends Controller
@@ -34,6 +35,10 @@ class LabelController extends Controller
             // ->html()
             ->limit(request()->query('limit', 500))
             ->process($set);
+
+        if ($instance instanceof View) {
+            return $instance;
+        }
 
         if ($instance instanceof Browsershot) {
             return $instance->pdf();

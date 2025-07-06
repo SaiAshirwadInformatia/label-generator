@@ -29,7 +29,7 @@
                 <div class="w-1/5 px-2">
                     <x-label for="column_nos" :value="__('Page Columns')" />
                     <x-select wire:model.live="label.settings.column_nos" id="column_nos" class="block mt-1 w-full"
-                        :options="[1 => 1, 2 => 2, 3 => 3, 4 => 4]" />
+                        :options="[1 => 1, 2 => 2, 3 => 3, 4 => 4, 5=>5,6=>6]" />
                     @error('column_nos')
                         <span class="error">{{ $message }}</span>
                     @enderror

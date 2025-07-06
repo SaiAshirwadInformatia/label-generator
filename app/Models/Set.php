@@ -58,7 +58,9 @@ class Set extends Model
     /**
      * @var array
      */
-    protected $fillable = ['name', 'type', 'columnName', 'settings', 'limit', 'incremental', 'header_width', 'header_font'];
+    protected $fillable = [
+        'name', 'type', 'columnName', 'settings', 'limit', 'incremental', 'header_width', 'header_font'
+    ];
 
     /**
      * @var array

@@ -2,46 +2,50 @@
     <div class="flex flex-wrap space-x-2">
         <div class="flex-auto">
             <x-label class="font-bold">Set Name</x-label>
-            <x-input wire:model.blur="set.name" type="text" class="w-10/12"/>
+            <x-input wire:model.blur="formData.name" type="text" class="w-10/12"/>
         </div>
         <div class="flex-shrink">
             <x-label class="font-bold">Limit</x-label>
-            <x-input wire:model.live="set.limit" type="number" step="1" class="w-6/12"/>
+            <x-input wire:model.live="formData.limit" type="number" step="1" class="w-6/12"/>
         </div>
         <div class="flex-shrink">
             <x-label class="font-bold">Incremental Start</x-label>
-            <x-input wire:model.live="set.incremental" type="number" step="1" class="w-6/12"/>
+            <x-input wire:model.live="formData.incremental" type="number" step="1" class="w-6/12"/>
         </div>
         <div class="flex-shrink">
             <x-label class="font-bold">Header Width</x-label>
-            <x-input wire:model.live="set.header_width" type="number" step="1" class="w-6/12"/>
+            <x-input wire:model.live="formData.header_width" type="number" step="1" class="w-6/12"/>
         </div>
         <div class="flex-shrink">
             <x-label class="font-bold">Header Font</x-label>
-            <x-input wire:model.live="set.header_font" type="number" step="1" class="w-10/12"/>
+            <x-input wire:model.live="formData.header_font" type="number" step="1" class="w-10/12"/>
         </div>
         <div class="flex-auto">
             <x-label class="font-bold">Different Page</x-label>
-            <x-select required wire:model.live="set.settings.differentPage" :options="$columns"
+            <x-select required wire:model.live="formData.settings.differentPage" :options="$columns"
                       class="w-11/12"></x-select>
         </div>
         <div class="flex-auto">
             <x-label class="font-bold">Set Type</x-label>
-            <x-select wire:model.live="set.type" :options="['1' => 'Single', '2' => 'Grouped']" class="w-10/12"/>
+            <x-select wire:model.live="formData.type" :options="['1' => 'Single', '2' => 'Grouped']" class="w-10/12"/>
         </div>
         @if ($set->type == '2')
             <div class="flex-auto">
                 <x-label class="font-bold">Group Column Name</x-label>
-                <x-select wire:model.live="set.columnName" :options="$columns"/>
+                <x-select wire:model.live="formData.columnName" :options="$columns"/>
             </div>
             <div class="flex-auto">
                 <x-label class="font-bold">Filter by Grouped</x-label>
-                <x-input wire:model.live="set.settings.filter" type="text" class="w-10/12"/>
+                <x-input wire:model.live="formData.settings.filter" type="text" class="w-10/12"/>
             </div>
         @endif
         <div class="flex-auto">
             <x-label class="font-bold">Add Fragile Banner</x-label>
-            <x-select wire:model.live="set.settings.fragile" :options="['No', 'Yes']"></x-select>
+            <x-select wire:model.live="formData.settings.fragile" :options="['No', 'Yes']"></x-select>
+        </div>
+        <div class="flex-auto">
+            <x-label class="font-bold">Hide Labels</x-label>
+            <x-select wire:model.live="formData.settings.hideLabels" :options="['No', 'Yes']"></x-select>
         </div>
     </div>
     <div class="mt-3 flex flex-wrap space-x-2">
@@ -70,8 +74,7 @@
     </div>
     <hr class="my-8"/>
     @if ($set->fields()->count())
-        @foreach ($set->fields()->orderBy('sequence', 'ASC')->get()
-    as $field_index => $field)
+        @foreach ($set->fields()->orderBy('sequence', 'ASC')->get() as $field_index => $field)
             @livewire('field-form', [
             'set' => $set,
             'field' => $field,
