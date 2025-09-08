@@ -114,6 +114,6 @@
 </div>
 @if(!$loop->last)
 {{--<div class="page-break"></div>--}}
-<div style="margin-bottom: 10px"></div>
+<div style="margin-bottom: 50px"></div>
 @endif
 @endforeach

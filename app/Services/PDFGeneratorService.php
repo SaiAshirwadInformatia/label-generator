@@ -267,6 +267,16 @@ class PDFGeneratorService
                     $row = [];
                     $emptyRows = 0;
                     foreach ($set->fields as $field) {
+                        if ($field->type == 'Concatenated') {
+                            $value = $field->default;
+
+                            foreach ($set->label->settings['columns'] as $column => $columnName) {
+                                $value = str_replace('|' . $columnName . '|', $record[$column], $value);
+                            }
+                            $row[$field->name] = $value;
+                            continue;
+                        }
+
                         $row[$field->name] = match ($field->type) {
                             'Text' => $record[$field->name] ?? '',
                             'Static' => $field->default,
