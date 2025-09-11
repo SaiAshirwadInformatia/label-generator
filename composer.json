@@ -20,7 +20,8 @@
         "nativephp/electron": "^1.0",
         "spatie/cpu-load-health-check": "^1.0",
         "spatie/laravel-activitylog": "^4.3",
-        "spatie/laravel-health": "^1.7"
+        "spatie/laravel-health": "^1.7",
+        "vinkla/hashids": "^13.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^3.5",
