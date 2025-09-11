@@ -22,9 +22,6 @@
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
                         {{ __('Users') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('health.index')" :active="request()->routeIs('users.*')">
-                        {{ __('Health') }}
-                    </x-nav-link>
                     @endadmin
                     <x-nav-link :href="route('activity_logs.index')" :active="request()->routeIs('activity_logs.index')">
                         {{ __('Activity Logs') }}
