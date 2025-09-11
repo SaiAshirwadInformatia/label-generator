@@ -49,4 +49,3 @@ Route::post('/activate/{user:ott}', [ActivationController::class, 'store'])->nam
 
 Route::get('/download/{token}', [ReadyController::class, 'download'])->name('download');
 
-Route::get('health', HealthCheckResultsController::class)->name('health.index');
