@@ -196,7 +196,7 @@ class PDFGeneratorService
                             'Text' => $record[$field->name] ?? '',
                             'Static' => $field->default,
                             'SubCount' => $subCount,
-                            'Concatenated' => $sub_records->pluck($field->name)->join(', '),
+                            'Concatenated' => $sub_records->pluck($field->name)->unique()->join(', '),
                             'Incremented' => $incremental++,
                             'Number' => intval($record[$field->name]),
                             'Float' => floatval($record[$field->name]),
