@@ -145,11 +145,6 @@ class User extends Authenticatable
         return $this->level == 'admin';
     }
 
-    public function setPasswordAttribute($value)
-    {
-        $this->attributes['password'] = bcrypt($value);
-    }
-
     public function templates()
     {
         return $this->hasMany(Template::class);
