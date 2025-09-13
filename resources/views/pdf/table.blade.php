@@ -1,6 +1,6 @@
 <style>
-    @page { margin: 5px; }
-    body { margin: 0px; font-family: Roboto; }
+    @page { margin: 5px }
+    body { margin: 0 0 30px 0; font-family: Roboto; }
     .table {
         margin: 0px auto 0px auto;
         width: 99%;
@@ -114,6 +114,6 @@
 </div>
 @if(!$loop->last)
 {{--<div class="page-break"></div>--}}
-<div style="margin-bottom: 50px"></div>
+<div style="margin-bottom: 25px"></div>
 @endif
 @endforeach
