@@ -5,13 +5,10 @@ namespace App\Services;
 use App\Models\Field;
 use App\Models\Set;
 use Barryvdh\DomPDF\Facade\Pdf;
-use Barryvdh\Snappy\Facades\SnappyPdf;
-use Barryvdh\Snappy\PdfWrapper;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
-use Spatie\Browsershot\Browsershot;
 
 class PDFGeneratorService
 {
@@ -109,7 +106,9 @@ class PDFGeneratorService
                     if ($field->type == 'Concatenated') {
                         $value = $field->default;
 
+                        dd($set->label->settings['columns']);
                         foreach ($set->label->settings['columns'] as $column => $columnName) {
+
                             $value = str_replace('|' . $columnName . '|', $record[$column], $value);
                         }
                         $row[$field->name] = $value;
