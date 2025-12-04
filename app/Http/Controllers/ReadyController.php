@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Download;
-use App\Models\Ready;
-use Carbon\Carbon;
+use App\Models\{Download, Ready};
 use Exception;
-use Hashids\Hashids;
 use Storage;
+use Carbon\Carbon;
+use Hashids\Hashids;
 
 class ReadyController extends Controller
 {

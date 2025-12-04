@@ -18,7 +18,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(DeleteOldGeneratedFiles::class)->daily();
-        $schedule->command(\Spatie\Health\Commands\RunHealthChecksCommand::class)->everyMinute();
         $schedule->command('activitylog:clean')->daily();
     }
 

@@ -1,12 +1,7 @@
 <?php
 
-use App\Http\Controllers\ActivationController;
-use App\Http\Controllers\ActivityLogsController;
-use App\Http\Controllers\LabelController;
-use App\Http\Controllers\ReadyController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Spatie\Health\Http\Controllers\HealthCheckResultsController;
+use App\Http\Controllers\{ActivationController, ActivityLogsController, LabelController, ReadyController, UserController};
 
 /*
 |--------------------------------------------------------------------------
