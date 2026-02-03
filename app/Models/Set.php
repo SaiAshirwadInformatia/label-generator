@@ -23,7 +23,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read int|null $fields_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Set newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Set newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Set query()
@@ -37,14 +36,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|Set whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Set whereUpdatedAt($value)
  * @mixin \Eloquent
- *
  * @property int|null $limit
  * @property int $incremental
  * @property-read Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read int|null $activities_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Set whereIncremental($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Set whereLimit($value)
+ * @mixin IdeHelperSet
  */
 class Set extends Model
 {

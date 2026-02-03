@@ -33,7 +33,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $sets_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
- *
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
@@ -48,16 +47,15 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
- *
  * @property string $level
  * @property string|null $ott
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Template[] $templates
  * @property-read int|null $templates_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|User whereLevel($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereOtt($value)
+ * @mixin IdeHelperUser
  */
 class User extends Authenticatable
 {

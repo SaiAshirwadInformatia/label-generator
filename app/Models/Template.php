@@ -20,7 +20,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $activities_count
  * @property-read \App\Models\Label|null $label
  * @property-read \App\Models\User $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Template newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Template newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Template query()
@@ -31,6 +30,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|Template whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Template whereUserId($value)
  * @mixin \Eloquent
+ * @mixin IdeHelperTemplate
  */
 class Template extends Model
 {

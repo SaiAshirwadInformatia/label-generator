@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude query()
@@ -23,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Exclude whereUserId($value)
  * @mixin \Eloquent
+ * @mixin IdeHelperExclude
  */
 class Exclude extends Pivot
 {

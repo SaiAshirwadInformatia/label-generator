@@ -20,7 +20,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Set|null $set
  * @property-read \App\Models\User|null $user
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Ready newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ready newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ready query()
@@ -34,6 +33,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Ready whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ready whereUserId($value)
  * @mixin \Eloquent
+ * @mixin IdeHelperReady
  */
 class Ready extends Model
 {

@@ -106,7 +106,6 @@ class PDFGeneratorService
                     if ($field->type == 'Concatenated') {
                         $value = $field->default;
 
-                        dd($set->label->settings['columns']);
                         foreach ($set->label->settings['columns'] as $column => $columnName) {
 
                             $value = str_replace('|' . $columnName . '|', $record[$column], $value);
@@ -195,7 +194,7 @@ class PDFGeneratorService
                             'Text' => $record[$field->name] ?? '',
                             'Static' => $field->default,
                             'SubCount' => $subCount,
-                            'Concatenated' => $sub_records->pluck($field->name)->unique()->join(', '),
+                            'Concatenated' => $sub_records->pluck($field->name)->map(fn($v) => trim($v))->unique()->join(', '),
                             'Incremented' => $incremental++,
                             'Number' => intval($record[$field->name]),
                             'Float' => floatval($record[$field->name]),
@@ -228,7 +227,7 @@ class PDFGeneratorService
                         $field_name = null;
                         if ($set->fields->contains(fn(Field $field) => $field->type == 'Concatenated')) {
                             $field_name = $set->fields->firstWhere('type', 'Concatenated')->name;
-                            $concatenated = $sub_records->pluck($field_name)->toArray();
+                            $concatenated = $sub_records->pluck($field_name)->unique()->toArray();
                         }
 
                         for ($i = 0; $i < intval(ceil($subCount / $limit)); $i++) {

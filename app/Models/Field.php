@@ -21,7 +21,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int $set_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
@@ -35,12 +34,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereUpdatedAt($value)
  * @mixin \Eloquent
- *
  * @property int $sequence
  * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activities
  * @property-read int|null $activities_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereSequence($value)
+ * @mixin IdeHelperField
  */
 class Field extends Model
 {
