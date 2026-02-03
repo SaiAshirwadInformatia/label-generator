@@ -17,6 +17,7 @@
         "laravel/nightwatch": "^1.13",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.7",
+        "league/flysystem-aws-s3-v3": "^3.31",
         "livewire/livewire": "^3.4",
         "spatie/laravel-activitylog": "^4.3",
         "vinkla/hashids": "^13.0"
