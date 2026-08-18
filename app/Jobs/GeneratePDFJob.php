@@ -12,6 +12,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 
@@ -59,8 +60,18 @@ class GeneratePDFJob implements ShouldQueue
         $ready->started_at = Carbon::now();
         $ready->save();
 
-        $service->process($this->set)
-            ->save($outputPath);
+        Log::info('GeneratePDFJob: starting', [
+            'set_id' => $this->set->id,
+            'memory_start' => memory_get_usage(true),
+        ]);
+
+        $service->processChunked($this->set, $outputPath);
+
+        Log::info('GeneratePDFJob: finished', [
+            'set_id' => $this->set->id,
+            'records' => $service->count(),
+            'memory_peak' => memory_get_peak_usage(true),
+        ]);
 
         $ready->completed_at = Carbon::now();
         $ready->records = $service->count();

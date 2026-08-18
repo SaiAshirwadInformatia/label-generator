@@ -6,14 +6,12 @@ use App\Models\{Download, Ready};
 use Exception;
 use Storage;
 use Carbon\Carbon;
-use Hashids\Hashids;
-
 class ReadyController extends Controller
 {
     public function download($token)
     {
         try {
-            $id = Hashids::decode($token)[0] ?? null;
+            $id = \Vinkla\Hashids\Facades\Hashids::decode($token)[0] ?? null;
             if ($id == null) {
                 abort(400, 'Invalid download token');
             }

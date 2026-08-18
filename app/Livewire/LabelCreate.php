@@ -66,7 +66,6 @@ class LabelCreate extends Component
     public function submitForm()
     {
         $this->validate();
-
         $label = new Label();
         $label->name = $this->name;
         $label->path = $this->path->store('/uploads', 'public');

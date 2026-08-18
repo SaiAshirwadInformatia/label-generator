@@ -7,6 +7,6 @@
         Activate Account
     @endcomponent
 
-    Thanks,<br>
+    Thanks,
     {{ config('app.name') }}
 @endcomponent

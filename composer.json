@@ -19,6 +19,8 @@
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "^3.31",
         "livewire/livewire": "^3.4",
+        "setasign/fpdf": "^1.9",
+        "setasign/fpdi": "^2.6",
         "spatie/laravel-activitylog": "^4.3",
         "vinkla/hashids": "^13.0"
     },

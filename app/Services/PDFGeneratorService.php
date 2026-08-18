@@ -20,6 +20,8 @@ class PDFGeneratorService
 
     private bool $html = false;
 
+    private int $chunkSize = 750;
+
     public function count()
     {
         return $this->recordCount;
@@ -46,6 +48,13 @@ class PDFGeneratorService
         return $this;
     }
 
+    public function chunkSize(int $size): PDFGeneratorService
+    {
+        $this->chunkSize = $size;
+
+        return $this;
+    }
+
     public function readExcel(Set $set): array
     {
         $label = $set->label;
@@ -57,35 +66,36 @@ class PDFGeneratorService
         $reader = ReaderEntityFactory::createReaderFromFile($path);
         $reader->open($path);
 
-        $previewRecords = 0;
-        $onlyOneSheet = 1;
+        $count = 0;
+
         foreach ($reader->getSheetIterator() as $sheet) {
             foreach ($sheet->getRowIterator() as $row) {
-                // do stuff with the row
                 $cells = $row->getCells();
                 $record = [];
                 foreach ($cells as $cell) {
                     $record[] = $cell->getValue();
                 }
+
                 if (count($columns) == 0) {
-                    // this is just to skip this row
+                    // this is just to skip this row (header row)
                     $columns = $record;
-                } else {
-                    $records[] = $record;
-                    $previewRecords++;
+                    continue;
+                }
+
+                $records[] = $record;
+                $count++;
+
+                // Stop reading the file entirely once we've hit the preview
+                // limit — no point streaming the rest of a 50k row file just
+                // to throw it away afterward.
+                if ($this->preview && $count >= $this->previewLimit) {
+                    break 2;
                 }
             }
             break;
         }
         $reader->close();
         $reader = null;
-
-        if ($this->preview) {
-            if (count($records) < $this->previewLimit) {
-                $this->previewLimit = count($records);
-            }
-            $records = collect($records)->take($this->previewLimit)->toArray();
-        }
 
         return $records;
     }
@@ -129,16 +139,6 @@ class PDFGeneratorService
                     }
                 }
 
-//                $emptyCount = 1;
-//                foreach ($row as $v) {
-//                    if (empty(trim($v))) {
-//                        $emptyCount++;
-//                    }
-//                }
-//                if ($emptyCount >= $emptyRows + 3) {
-//                    continue;
-//                }
-
                 $data[] = $row;
             }
             $this->recordCount += count($data);
@@ -153,7 +153,6 @@ class PDFGeneratorService
             $tableRows = ['General' => collect($records)];
         }
         $records = null;
-
 
         if ($set->type === Set::GROUPED) {
             $index = 0;
@@ -314,7 +313,7 @@ class PDFGeneratorService
         return $tables;
     }
 
-    public function process(Set $set): \Barryvdh\DomPDF\PDF|PdfWrapper|View
+    public function process(Set $set): \Barryvdh\DomPDF\PDF|View
     {
         $label = $set->label;
         $records = $this->readExcel($set);
@@ -325,23 +324,104 @@ class PDFGeneratorService
             return view('pdf.table', compact('set', 'tables'));
         }
 
-//        if (app()->environment('local')) {
         return Pdf::loadView('pdf.table', compact('set', 'tables'))
             ->setPaper($label->settings['size'], $label->settings['orientation']);
-//        }
+    }
 
-//        return SnappyPdf::loadView('pdf.table', compact('set', 'tables'))
-//            ->setPaper($label->settings['size'], $label->settings['orientation']);
+    /**
+     * Memory-safe path for large datasets: renders the label set in fixed-size
+     * chunks (separate DomPDF instances, each discarded after saving), then
+     * stitches the resulting single-page-per-chunk... multi-page PDFs back
+     * together with FPDI. This caps DomPDF's peak memory at "one chunk" no
+     * matter how large the source Excel file is.
+     *
+     * Returns the path the final merged PDF was written to.
+     */
+    public function processChunked(Set $set, string $outputPath): string
+    {
+        $label = $set->label;
 
-//
-//
-//        $browserShot = Browsershot::html(view('pdf.table', compact('set', 'tables'))->render())
-//            ->format($label->settings['size']);
-//
-//        if ($label->settings['orientation'] == 'landscape') {
-//            $browserShot->landscape();
-//        }
-//
-//        return $browserShot;
+        $records = $this->readExcel($set);
+        $tables = $this->prepareTables($set, $records);
+        unset($records);
+
+        // Flatten every sub-table (grouped/differentPage) into one row list,
+        // chunk it, render each chunk as its own small PDF, then merge.
+        // If you need each named table (e.g. per-state) as a *separate*
+        // output file instead of merged into one PDF, don't flatten here —
+        // loop $tables and call a per-table chunk+save instead.
+        $rows = [];
+        foreach ($tables as $tableRows) {
+            foreach ($tableRows as $row) {
+                $rows[] = $row;
+            }
+        }
+        unset($tables);
+
+        $tmpDir = storage_path('app' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . uniqid('pdfchunk_'));
+        if (!is_dir($tmpDir)) {
+            mkdir($tmpDir, 0755, true);
+        }
+
+        $partialPaths = [];
+
+        try {
+            $chunks = array_chunk($rows, $this->chunkSize);
+            unset($rows);
+
+            foreach ($chunks as $i => $chunk) {
+                $tablesChunk = ['General' => $chunk];
+                $partialPath = $tmpDir . DIRECTORY_SEPARATOR . "part-{$i}.pdf";
+
+                Pdf::loadView('pdf.table', ['set' => $set, 'tables' => $tablesChunk])
+                    ->setPaper($label->settings['size'], $label->settings['orientation'])
+                    ->save($partialPath);
+
+                $partialPaths[] = $partialPath;
+
+                unset($tablesChunk, $chunks[$i]);
+                gc_collect_cycles();
+            }
+
+            $this->mergePdfs($partialPaths, $outputPath);
+        } finally {
+            foreach ($partialPaths as $path) {
+                if (file_exists($path)) {
+                    @unlink($path);
+                }
+            }
+            @rmdir($tmpDir);
+        }
+
+        return $outputPath;
+    }
+
+    private function mergePdfs(array $partialPaths, string $outputPath): void
+    {
+        if (count($partialPaths) === 1) {
+            // Nothing to merge, just move it into place.
+            rename($partialPaths[0], $outputPath);
+            // prevent double-unlink in the finally block above
+            array_splice($partialPaths, 0, 1);
+
+            return;
+        }
+
+        $pdf = new \setasign\Fpdi\Fpdi();
+
+        foreach ($partialPaths as $path) {
+            $pageCount = $pdf->setSourceFile($path);
+            for ($p = 1; $p <= $pageCount; $p++) {
+                $templateId = $pdf->importPage($p);
+                $size = $pdf->getTemplateSize($templateId);
+                $pdf->AddPage(
+                    $size['orientation'],
+                    [$size['width'], $size['height']]
+                );
+                $pdf->useTemplate($templateId);
+            }
+        }
+
+        $pdf->Output('F', $outputPath);
     }
 }

@@ -33,6 +33,11 @@ class PDFReadyMail extends Mailable
     {
         return $this->markdown('emails.pdf_ready')
             ->cc([['name' => 'Rohan Sakhale', 'email' => 'rohan@saiashirwad.com']])
-            ->subject('Download your Labels PDF : '.$this->ready->set->name);
+            ->subject('Download your Labels PDF : '.$this->ready->set->name)
+            ->attachFromStorage(
+                $this->ready->path,
+                $this->ready->set->name . '.pdf',
+                ['mime' => 'application/pdf']
+            );
     }
 }
