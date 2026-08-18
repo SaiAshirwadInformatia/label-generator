@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Events\LabelCreated;
 use App\Models\Label;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Livewire\WithFileUploads;
@@ -68,7 +69,13 @@ class LabelCreate extends Component
         $this->validate();
         $label = new Label();
         $label->name = $this->name;
-        $label->path = $this->path->store('/uploads', 'public');
+        $path = $this->path->store('uploads', 'public');
+
+        if (!Storage::disk('public')->exists($path)) {
+            throw new \Exception("Upload failed: {$path}");
+        }
+
+        $label->path = $path;
         $label->settings = [
             'size'        => $this->size,
             'orientation' => $this->orientation,

@@ -7,6 +7,7 @@ use App\Models\Set;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Box\Spout\Reader\Common\Creator\ReaderEntityFactory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
@@ -62,7 +63,16 @@ class PDFGeneratorService
         $records = [];
 
         $path = Storage::disk('public')->path($label->path);
+        Log::info('CSV path', [
+            'db_path' => $label->path,
+            'full_path' => $path,
+            'exists' => file_exists($path),
+            'disk_exists' => Storage::disk('public')->exists($label->path),
+        ]);
 
+        if (! Storage::disk('public')->exists($label->path)) {
+            throw new \Exception("CSV not found: {$label->path}");
+        }
         $reader = ReaderEntityFactory::createReaderFromFile($path);
         $reader->open($path);
 
@@ -316,6 +326,7 @@ class PDFGeneratorService
     public function process(Set $set): \Barryvdh\DomPDF\PDF|View
     {
         $label = $set->label;
+        
         $records = $this->readExcel($set);
 
         $tables = $this->prepareTables($set, $records);
@@ -397,31 +408,37 @@ class PDFGeneratorService
     }
 
     private function mergePdfs(array $partialPaths, string $outputPath): void
-    {
-        if (count($partialPaths) === 1) {
-            // Nothing to merge, just move it into place.
-            rename($partialPaths[0], $outputPath);
-            // prevent double-unlink in the finally block above
-            array_splice($partialPaths, 0, 1);
+{
+    $this->ensureDirectoryExists(dirname($outputPath));
 
-            return;
-        }
+    if (count($partialPaths) === 1) {
+        rename($partialPaths[0], $outputPath);
+        array_splice($partialPaths, 0, 1);
 
-        $pdf = new \setasign\Fpdi\Fpdi();
-
-        foreach ($partialPaths as $path) {
-            $pageCount = $pdf->setSourceFile($path);
-            for ($p = 1; $p <= $pageCount; $p++) {
-                $templateId = $pdf->importPage($p);
-                $size = $pdf->getTemplateSize($templateId);
-                $pdf->AddPage(
-                    $size['orientation'],
-                    [$size['width'], $size['height']]
-                );
-                $pdf->useTemplate($templateId);
-            }
-        }
-
-        $pdf->Output('F', $outputPath);
+        return;
     }
+
+    $pdf = new Fpdi();
+
+    foreach ($partialPaths as $path) {
+        $pageCount = $pdf->setSourceFile($path);
+        for ($p = 1; $p <= $pageCount; $p++) {
+            $templateId = $pdf->importPage($p);
+            $size = $pdf->getTemplateSize($templateId);
+            $pdf->AddPage($size['orientation'], [$size['width'], $size['height']]);
+            $pdf->useTemplate($templateId);
+        }
+    }
+
+    $pdf->Output('F', $outputPath);
+}
+
+private function ensureDirectoryExists(string $dir): void
+{
+    if (!is_dir($dir)) {
+        if (!mkdir($dir, 0755, true) && !is_dir($dir)) {
+            throw new \RuntimeException("Failed to create output directory: {$dir}");
+        }
+    }
+}
 }
