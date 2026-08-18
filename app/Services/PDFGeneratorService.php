@@ -125,6 +125,7 @@ class PDFGeneratorService
                 $emptyRows = 0;
                 foreach ($set->fields as $field) {
                     if ($field->type == 'Concatenated') {
+                        
                         $value = $field->default;
 
                         foreach ($set->label->settings['columns'] as $column => $columnName) {
