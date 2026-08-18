@@ -56,6 +56,14 @@ class GeneratePDFJob implements ShouldQueue
 
         $outputPath = Storage::path($fileName);
 
+        // belt-and-suspenders: guarantee the real filesystem directory exists,
+        // independent of which "disk" Storage::makeDirectory() targeted above
+        if (!is_dir(dirname($outputPath))) {
+            mkdir(dirname($outputPath), 0755, true);
+        }
+
+        Log::info('GeneratePDFJob: resolved output path', ['outputPath' => $outputPath]);
+
         $ready->path = $fileName;
         $ready->started_at = Carbon::now();
         $ready->save();
