@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html>
-<body>
-    <h2>Your PDF is Ready</h2>
+<x-mail::message>
+# Your PDF is Ready
 
-    <p>Hello {{ $ready->user->name }},</p>
+Hello,
 
-    <p>Your PDF <strong>{{ $ready->set->name }}</strong> has been generated.</p>
+Your label PDF **{{ $ready->set->name }}** has been generated successfully.
 
-    <p>Records: {{ $ready->records }}</p>
+**Records:** {{ $ready->records }}
 
-    <p>The PDF is attached to this email.</p>
-</body>
-</html>
+The PDF is attached to this email.
+
+Thanks,<br>
+{{ config('app.name') }}
+</x-mail::message>
