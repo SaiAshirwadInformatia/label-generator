@@ -3,41 +3,42 @@
 namespace App\Mail;
 
 use App\Models\Ready;
-use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Attachment;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
 class PDFReadyMail extends Mailable
 {
-    use Queueable;
     use SerializesModels;
 
-    public Ready $ready;
+    public function __construct(public Ready $ready) {}
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(Ready $ready)
+    public function envelope(): Envelope
     {
-        $this->ready = $ready;
+        return new Envelope(
+            subject: 'Download your Labels PDF : '.$this->ready->set->name,
+            cc: ['rohan@saiashirwad.com'],
+        );
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function content(): Content
     {
-        return $this->markdown('emails.pdf_ready')
-            ->cc([['name' => 'Rohan Sakhale', 'email' => 'rohan@saiashirwad.com']])
-            ->subject('Download your Labels PDF : '.$this->ready->set->name)
-            ->attachFromStorage(
-                $this->ready->path,
-                $this->ready->set->name . '.pdf',
-                ['mime' => 'application/pdf']
-            );
+        return new Content(
+            markdown: 'emails.pdf_ready',
+            with: [
+                'ready' => $this->ready,
+            ],
+        );
+    }
+
+    public function attachments(): array
+    {
+        return [
+            Attachment::fromStorageDisk('public', $this->ready->path)
+                ->as($this->ready->set->name.'.pdf')
+                ->withMime('application/pdf'),
+        ];
     }
 }

@@ -1,15 +1,14 @@
-@component('mail::message')
-# Your PDF is Ready
+<!DOCTYPE html>
+<html>
+<body>
+    <h2>Your PDF is Ready</h2>
 
-Set Name: {{ $ready->set->name }}
-Records: {{ $ready->records }}
+    <p>Hello {{ $ready->user->name }},</p>
 
-Generated In: 2 seconds
+    <p>Your PDF <strong>{{ $ready->set->name }}</strong> has been generated.</p>
 
-@component('mail::button', ['url' => route('download', ['token' =>Vinkla\Hashids\Facades\Hashids::encode($ready->id)])])
-    Download
-@endcomponent
+    <p>Records: {{ $ready->records }}</p>
 
-Thanks,<br>
-{{ config('app.name') }}
-@endcomponent
+    <p>The PDF is attached to this email.</p>
+</body>
+</html>

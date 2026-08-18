@@ -40,6 +40,15 @@ class Ready extends Model
     use HasFactory;
     use SoftDeletes;
 
+     protected $fillable = [
+        'user_id',
+        'set_id',
+        'path',
+        'records',
+        'started_at',
+        'completed_at',
+    ];
+
     protected $casts = [
         'started_at'   => 'timestamp',
         'completed_at' => 'timestamp',

@@ -38,60 +38,51 @@ class GeneratePDFJob implements ShouldQueue
      *
      * @return void
      */
-    public function handle()
-    {
-        $service = app()->make(PDFGeneratorService::class);
+   public function handle()
+{
+    $service = app(PDFGeneratorService::class);
+    $disk = Storage::disk('public');
 
-        $ready = new Ready();
-        $ready->user_id = $this->set->label->user->id;
-        $ready->set_id = $this->set->id;
+$directory = now()->format('Y/m') . '/' .
+    str($this->set->label->name)->camel()->ucfirst();
 
-        $directory = Carbon::now()->format('Y' . DIRECTORY_SEPARATOR . 'm');
-        $directory .= DIRECTORY_SEPARATOR . str($this->set->label->name)->camel()->ucfirst();
-        if (!Storage::exists($directory)) {
-            Storage::makeDirectory($directory);
-        }
-        $fileName = $directory . DIRECTORY_SEPARATOR . str($this->set->name)->camel()->ucfirst();
-        $fileName .= '-' . now()->format('d-m-Y-H-i-A') . '.pdf';
+$disk->makeDirectory($directory);
 
-        $outputPath = Storage::path($fileName);
+$fileName = $directory . '/' .
+    str($this->set->name)->camel()->ucfirst() .
+    '-' . now()->format('d-m-Y-H-i-A') . '.pdf';
 
-        // belt-and-suspenders: guarantee the real filesystem directory exists,
-        // independent of which "disk" Storage::makeDirectory() targeted above
-        if (!is_dir(dirname($outputPath))) {
-            mkdir(dirname($outputPath), 0755, true);
-        }
+$outputPath = $disk->path($fileName);
 
-        Log::info('GeneratePDFJob: resolved output path', ['outputPath' => $outputPath]);
+$ready = Ready::create([
+    'user_id'    => $this->set->label->user->id,
+    'set_id'     => $this->set->id,
+    'path'       => $fileName,
+    'started_at' => now(),
+]);
 
-        $ready->path = $fileName;
-        $ready->started_at = Carbon::now();
-        $ready->save();
+$service->processChunked($this->set, $outputPath);
 
-        Log::info('GeneratePDFJob: starting', [
-            'set_id' => $this->set->id,
-            'memory_start' => memory_get_usage(true),
-        ]);
+$ready->update([
+    'completed_at' => now(),
+    'records'      => $service->count(),
+]);
 
-        $service->processChunked($this->set, $outputPath);
+    $service->processChunked($this->set, $outputPath);
 
-        Log::info('GeneratePDFJob: finished', [
-            'set_id' => $this->set->id,
-            'records' => $service->count(),
-            'memory_peak' => memory_get_peak_usage(true),
-        ]);
+    $ready->update([
+        'completed_at' => now(),
+        'records'      => $service->count(),
+    ]);
 
-        $ready->completed_at = Carbon::now();
-        $ready->records = $service->count();
-        $ready->save();
+    Log::info('PDF Check', [
+        'exists' => $disk->exists($fileName),
+        'path'   => $outputPath,
+    ]);
 
-        activity('ready')
-            ->performedOn($ready)
-            ->causedBy($this->set->label->user)
-            ->event('generated')
-            ->log('PDF Ready with records ' . $service->count());
+    $ready = Ready::with(['user', 'set'])->findOrFail($ready->id);
 
-        Mail::to($this->set->label->user)
-            ->queue(new PDFReadyMail($ready));
-    }
+    Mail::to($ready->user->email)
+        ->send(new PDFReadyMail($ready));
+}
 }
